@@ -1,0 +1,192 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\victor\\source\\repos\\CaixaMEI\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{262C6A48-AE34-D77E-44A9-AF0CD30983F0}|Models\\Models.csproj|c:\\users\\victor\\source\\repos\\caixamei\\models\\service\\usuarios\\usuarioservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{262C6A48-AE34-D77E-44A9-AF0CD30983F0}|Models\\Models.csproj|solutionrelative:models\\service\\usuarios\\usuarioservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{262C6A48-AE34-D77E-44A9-AF0CD30983F0}|Models\\Models.csproj|c:\\users\\victor\\source\\repos\\caixamei\\models\\service\\usuarios\\iusuarioservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{262C6A48-AE34-D77E-44A9-AF0CD30983F0}|Models\\Models.csproj|solutionrelative:models\\service\\usuarios\\iusuarioservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6AA69011-BA79-4E84-959B-14B4CA68BA8F}|ApiConnection\\ApiConnection.csproj|c:\\users\\victor\\source\\repos\\caixamei\\apiconnection\\controllers\\usuarios\\usuariocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6AA69011-BA79-4E84-959B-14B4CA68BA8F}|ApiConnection\\ApiConnection.csproj|solutionrelative:apiconnection\\controllers\\usuarios\\usuariocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{262C6A48-AE34-D77E-44A9-AF0CD30983F0}|Models\\Models.csproj|c:\\users\\victor\\source\\repos\\caixamei\\models\\repositorios\\usuarios\\usuariorepositor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{262C6A48-AE34-D77E-44A9-AF0CD30983F0}|Models\\Models.csproj|solutionrelative:models\\repositorios\\usuarios\\usuariorepositor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{262C6A48-AE34-D77E-44A9-AF0CD30983F0}|Models\\Models.csproj|c:\\users\\victor\\source\\repos\\caixamei\\models\\repositorios\\usuarios\\iusuariorepositor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{262C6A48-AE34-D77E-44A9-AF0CD30983F0}|Models\\Models.csproj|solutionrelative:models\\repositorios\\usuarios\\iusuariorepositor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6AA69011-BA79-4E84-959B-14B4CA68BA8F}|ApiConnection\\ApiConnection.csproj|c:\\users\\victor\\source\\repos\\caixamei\\apiconnection\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6AA69011-BA79-4E84-959B-14B4CA68BA8F}|ApiConnection\\ApiConnection.csproj|solutionrelative:apiconnection\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{262C6A48-AE34-D77E-44A9-AF0CD30983F0}|Models\\Models.csproj|c:\\users\\victor\\source\\repos\\caixamei\\models\\data\\supabaseservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{262C6A48-AE34-D77E-44A9-AF0CD30983F0}|Models\\Models.csproj|solutionrelative:models\\data\\supabaseservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{262C6A48-AE34-D77E-44A9-AF0CD30983F0}|Models\\Models.csproj|c:\\users\\victor\\source\\repos\\caixamei\\models\\data\\supabasesettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{262C6A48-AE34-D77E-44A9-AF0CD30983F0}|Models\\Models.csproj|solutionrelative:models\\data\\supabasesettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6AA69011-BA79-4E84-959B-14B4CA68BA8F}|ApiConnection\\ApiConnection.csproj|c:\\users\\victor\\source\\repos\\caixamei\\apiconnection\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{6AA69011-BA79-4E84-959B-14B4CA68BA8F}|ApiConnection\\ApiConnection.csproj|solutionrelative:apiconnection\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{262C6A48-AE34-D77E-44A9-AF0CD30983F0}|Models\\Models.csproj|c:\\users\\victor\\source\\repos\\caixamei\\models\\entidades\\usuarios\\usuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{262C6A48-AE34-D77E-44A9-AF0CD30983F0}|Models\\Models.csproj|solutionrelative:models\\entidades\\usuarios\\usuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "UsuarioRepositor.cs",
+              "DocumentMoniker": "C:\\Users\\victor\\source\\repos\\CaixaMEI\\Models\\Repositorios\\Usuarios\\UsuarioRepositor.cs",
+              "RelativeDocumentMoniker": "Models\\Repositorios\\Usuarios\\UsuarioRepositor.cs",
+              "ToolTip": "C:\\Users\\victor\\source\\repos\\CaixaMEI\\Models\\Repositorios\\Usuarios\\UsuarioRepositor.cs",
+              "RelativeToolTip": "Models\\Repositorios\\Usuarios\\UsuarioRepositor.cs",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAgwAwAAABZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-28T02:11:16.304Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "IUsuarioRepositor.cs",
+              "DocumentMoniker": "C:\\Users\\victor\\source\\repos\\CaixaMEI\\Models\\Repositorios\\Usuarios\\IUsuarioRepositor.cs",
+              "RelativeDocumentMoniker": "Models\\Repositorios\\Usuarios\\IUsuarioRepositor.cs",
+              "ToolTip": "C:\\Users\\victor\\source\\repos\\CaixaMEI\\Models\\Repositorios\\Usuarios\\IUsuarioRepositor.cs",
+              "RelativeToolTip": "Models\\Repositorios\\Usuarios\\IUsuarioRepositor.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAwAAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-28T02:12:05.693Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "UsuarioController.cs",
+              "DocumentMoniker": "C:\\Users\\victor\\source\\repos\\CaixaMEI\\ApiConnection\\Controllers\\Usuarios\\UsuarioController.cs",
+              "RelativeDocumentMoniker": "ApiConnection\\Controllers\\Usuarios\\UsuarioController.cs",
+              "ToolTip": "C:\\Users\\victor\\source\\repos\\CaixaMEI\\ApiConnection\\Controllers\\Usuarios\\UsuarioController.cs",
+              "RelativeToolTip": "ApiConnection\\Controllers\\Usuarios\\UsuarioController.cs",
+              "ViewState": "AgIAACsAAAAAAAAAAAAkwDEAAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-28T20:00:35.85Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "UsuarioService.cs",
+              "DocumentMoniker": "C:\\Users\\victor\\source\\repos\\CaixaMEI\\Models\\Service\\Usuarios\\UsuarioService.cs",
+              "RelativeDocumentMoniker": "Models\\Service\\Usuarios\\UsuarioService.cs",
+              "ToolTip": "C:\\Users\\victor\\source\\repos\\CaixaMEI\\Models\\Service\\Usuarios\\UsuarioService.cs",
+              "RelativeToolTip": "Models\\Service\\Usuarios\\UsuarioService.cs",
+              "ViewState": "AgIAABgAAAAAAAAAAAAowAcAAAA9AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-28T19:52:48.029Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "IUsuarioService.cs",
+              "DocumentMoniker": "C:\\Users\\victor\\source\\repos\\CaixaMEI\\Models\\Service\\Usuarios\\IUsuarioService.cs",
+              "RelativeDocumentMoniker": "Models\\Service\\Usuarios\\IUsuarioService.cs",
+              "ToolTip": "C:\\Users\\victor\\source\\repos\\CaixaMEI\\Models\\Service\\Usuarios\\IUsuarioService.cs",
+              "RelativeToolTip": "Models\\Service\\Usuarios\\IUsuarioService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAoAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-28T19:57:36.005Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\victor\\source\\repos\\CaixaMEI\\ApiConnection\\Program.cs",
+              "RelativeDocumentMoniker": "ApiConnection\\Program.cs",
+              "ToolTip": "C:\\Users\\victor\\source\\repos\\CaixaMEI\\ApiConnection\\Program.cs",
+              "RelativeToolTip": "ApiConnection\\Program.cs",
+              "ViewState": "AgIAAAcAAAAAAAAAAAAAwA8AAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-28T20:08:01.686Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "SupabaseService.cs",
+              "DocumentMoniker": "C:\\Users\\victor\\source\\repos\\CaixaMEI\\Models\\Data\\SupabaseService.cs",
+              "RelativeDocumentMoniker": "Models\\Data\\SupabaseService.cs",
+              "ToolTip": "C:\\Users\\victor\\source\\repos\\CaixaMEI\\Models\\Data\\SupabaseService.cs",
+              "RelativeToolTip": "Models\\Data\\SupabaseService.cs",
+              "ViewState": "AgIAAAcAAAAAAAAAAAAgwAgAAAA0AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-28T20:14:06.419Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "SupabaseSettings.cs",
+              "DocumentMoniker": "C:\\Users\\victor\\source\\repos\\CaixaMEI\\Models\\Data\\SupabaseSettings.cs",
+              "RelativeDocumentMoniker": "Models\\Data\\SupabaseSettings.cs",
+              "ToolTip": "C:\\Users\\victor\\source\\repos\\CaixaMEI\\Models\\Data\\SupabaseSettings.cs",
+              "RelativeToolTip": "Models\\Data\\SupabaseSettings.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-28T20:14:12.018Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\victor\\source\\repos\\CaixaMEI\\ApiConnection\\appsettings.json",
+              "RelativeDocumentMoniker": "ApiConnection\\appsettings.json",
+              "ToolTip": "C:\\Users\\victor\\source\\repos\\CaixaMEI\\ApiConnection\\appsettings.json",
+              "RelativeToolTip": "ApiConnection\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAA0AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-12-28T20:14:20.756Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Usuario.cs",
+              "DocumentMoniker": "C:\\Users\\victor\\source\\repos\\CaixaMEI\\Models\\entidades\\Usuarios\\Usuario.cs",
+              "RelativeDocumentMoniker": "Models\\entidades\\Usuarios\\Usuario.cs",
+              "ToolTip": "C:\\Users\\victor\\source\\repos\\CaixaMEI\\Models\\entidades\\Usuarios\\Usuario.cs",
+              "RelativeToolTip": "Models\\entidades\\Usuarios\\Usuario.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAywCEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-28T02:08:46.486Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

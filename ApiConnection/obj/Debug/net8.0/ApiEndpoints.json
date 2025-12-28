@@ -1,0 +1,34 @@
+[
+  {
+    "ContainingType": "ApiConnection.Controllers.Usuarios.UsuarioController",
+    "Method": "CadastrarUsuarioAsync",
+    "RelativePath": "api/Usuario/CadastrarUsuario",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "ApiConnection.Controllers.Usuarios.UsuarioController\u002BUsuarioCreateDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ApiConnection.Controllers.Usuarios.UsuarioController",
+    "Method": "FazerLogin",
+    "RelativePath": "api/Usuario/fazer_login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "usuarioLogin",
+        "Type": "Models.Service.Usuarios.UsuarioService\u002BLogindto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]
