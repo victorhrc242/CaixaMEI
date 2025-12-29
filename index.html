@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MEI Fácil</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    
+    <nav class="menu">
+        <div class="logo">
+            <h2>MEI <span>Fácil</span></h2>
+            <img src="./imagens/logo.png" class="icon-menu" alt="Logo">
+        </div>
+
+        <div class="nav-links">
+            <button class="men" onclick="document.getElementById('vantagens').scrollIntoView({ behavior: 'smooth' })">
+                Vantagens
+            </button>
+
+            <button class="men" onclick="document.getElementById('funcionalidades').scrollIntoView({ behavior: 'smooth' })">
+                Funcionalidades
+            </button>
+
+            <button class="men" onclick="document.getElementById('planos').scrollIntoView({ behavior: 'smooth' })">
+                Planos
+            </button>
+        </div>
+
+        <button class="sbms">
+            Saiba mais
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                <path d="M5 12h14M13 5l6 7-6 7"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"/>
+            </svg>
+        </button>
+    </nav>
+
+    <div class="divider"></div>
+
+    
+    <div class="container-header">
+        <header>
+            <div class="logo2">
+                <h1>MEI <span>Fácil</span></h1>
+                <img src="./imagens/logo.png" class="icon-menu2" alt="Logo">
+            </div>
+
+            <p>
+                Controle financeiro descomplicado <br>
+                para Microempreendedores <br>
+                individuais e autónomos.
+            </p>
+
+            <button class="btn-hero">Conheça a Plataforma</button>
+        </header>
+
+        <img src="./imagens/mei.png" alt="Plataforma MEI Fácil" class="imagem">
+    </div>
+
+   
+    <section class="section-container" id="vantagens">
+        <div class="grid-vantagens">
+            <div class="card-mini">
+                
+                <p>📈 Controle suas receitas, despesas e lucro de forma simplificada.</p>
+            </div>
+
+            <div class="card-mini">
+                
+                <p>🔒 Organize suas finanças sem erros contábeis.</p>
+            </div>
+
+            <div class="card-mini">
+                
+                <p>🔔 Alertas de vencimentos e limites.</p>
+            </div>
+
+            <div class="card-mini">
+                
+                <p>🚀 Plataforma moderna, intuitiva e segura.</p>
+            </div>
+        </div>
+    </section>
+
+    
+    <section class="section-container" id="funcionalidades">
+        <div class="section-title">
+            <span>►</span> Funcionalidades <span>◄</span>
+        </div>
+
+        <div class="grid-funcionalidades">
+            <div class="card-func">
+                <div class="icon-box yellow">
+                    
+                </div>
+                <div class="card-content">
+                    <h3>📈 Cadastro</h3>
+                    <p class="subtitle">Entradas e Saídas</p>
+                    <p class="description">Registre receitas e despesas facilmente.</p>
+                </div>
+            </div>
+
+            <div class="card-func">
+                <div class="icon-box green">
+                    
+                </div>
+                <div class="card-content">
+                    <h3>💰 Lucro Mensal</h3>
+                    <p class="description">Cálculo automático e preciso.</p>
+                </div>
+            </div>
+
+            <div class="card-func">
+                <div class="icon-box blue">
+                    
+                </div>
+                <div class="card-content">
+                    <h3>🔔 Alertas</h3>
+                    <p class="description">Notificações inteligentes.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+    <section class="section-container" id="planos">
+        <div class="section-title">
+            <span>►</span> Planos Flexíveis <span>◄</span>
+        </div>
+
+        <div class="grid-planos">
+            <div class="card-plan purple">
+                <span class="badge">GRÁTIS</span>
+                <h3>Plano Gratuito</h3>
+                <p>Funcionalidades básicas</p>
+            </div>
+
+            <div class="card-plan cyan">
+                <span class="badge">PRO</span>
+                <h3>Plano Completo</h3>
+                <p>Acesso ilimitado para o MEI</p>
+            </div>
+        </div>
+
+        <button class="plansbtn">Saiba Mais sobre os Planos</button>
+    </section>
+
+    <div class="divider-footer"></div>
+
+    
+    <footer>
+        <p>Projeto sob licença MIT • Em desenvolvimento</p>
+    </footer>
+
+</body>
+</html>
