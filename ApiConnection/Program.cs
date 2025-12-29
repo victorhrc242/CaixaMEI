@@ -1,5 +1,7 @@
 using Models.Data;
+using Models.Repositorios.Movimentacao;
 using Models.Repositorios.Usuarios;
+using Models.Service.Movimentacao;
 using Models.Service.Usuarios;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +18,8 @@ builder.Services.Configure<SupabaseSettings>(
 builder.Services.AddScoped<SupabaseService>();
 builder.Services.AddScoped<IUsuarioRepositor, UsuarioRepositor>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+builder.Services.AddScoped<IMovimentacaoRepositorio, MovimentacaoRepositor>();
+builder.Services.AddScoped<IMovimentacaoService, MovimentacaoService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

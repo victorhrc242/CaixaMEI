@@ -1,5 +1,136 @@
 [
   {
+    "ContainingType": "ApiConnection.Controllers.Movimentacao.MovimentacaoController",
+    "Method": "Editar",
+    "RelativePath": "api/movimentacao/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "Models.Repositorios.Movimentacao.EditarMovimentacaoDto",
+        "IsRequired": true
+      },
+      {
+        "Name": "usuarioid",
+        "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ApiConnection.Controllers.Movimentacao.MovimentacaoController",
+    "Method": "Excluir",
+    "RelativePath": "api/movimentacao/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "usuarioid",
+        "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ApiConnection.Controllers.Movimentacao.MovimentacaoController",
+    "Method": "Listar",
+    "RelativePath": "api/movimentacao/{usuarioId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "usuarioId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ApiConnection.Controllers.Movimentacao.MovimentacaoController",
+    "Method": "ListarPorMes",
+    "RelativePath": "api/movimentacao/{usuarioId}/mes",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "usuarioId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "ano",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "mes",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ApiConnection.Controllers.Movimentacao.MovimentacaoController",
+    "Method": "Resumo",
+    "RelativePath": "api/movimentacao/{usuarioId}/resumo",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "usuarioId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "mes",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "ano",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ApiConnection.Controllers.Movimentacao.MovimentacaoController",
+    "Method": "AdicionarMovimentacao",
+    "RelativePath": "api/movimentacao/adicionar",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "movimentacao",
+        "Type": "Models.Entidades.Movimentacaos",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "ApiConnection.Controllers.Usuarios.UsuarioController",
     "Method": "CadastrarUsuarioAsync",
     "RelativePath": "api/Usuario/CadastrarUsuario",
