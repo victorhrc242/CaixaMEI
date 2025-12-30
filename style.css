@@ -674,8 +674,146 @@ footer p {
 }
 
 .plansbtn:hover {
+  
     background: rgba(63, 169, 245, 0.2);
     box-shadow: 0 0 25px rgba(63, 169, 245, 0.4);
     border-color: #3FA9F5;
     transform: translateY(-2px);
+
+
+  /* page do saiba mais daq */
+
+.cabecalho2 {
+    text-align: center;
+    padding-top: 71px;
+}
+
+.titulo-header {
+  
+    display: inline-flex; 
+    align-items: center;
+    gap: 15px;
+    padding-left: 35px;
+    padding-bottom: 10px;
+}
+
+
+.cabecalho2 h1 {
+    font-size: 50px;
+    font-weight: 700;
+    background: linear-gradient(90deg, #6FE8FF, #9B6BFF);
+
+    background-clip: text;          
+    -webkit-background-clip: text;  
+
+    color: transparent;
+    margin: 0;
+}
+
+.logo-header {
+  
+    width: 85px;
+    height: auto;
+    transform: translateY(2px); 
+    filter: drop-shadow(0 0 10px rgba(111,232,255,0.6));
+}
+
+
+.cards2 {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap; 
+    margin-top: 40px;
+}
+
+
+.card2 {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 16px;
+
+    padding: 28px 26px;
+    width: 300px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+
+    backdrop-filter: blur(18px);
+
+    color: #ffffff;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.card2:hover {
+    transform: translateY(-4px);
+    border-color: rgba(140, 200, 255, 0.5);
+}
+
+.card2 h3 {
+    position: relative;
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+    padding-bottom: 8px;
+}
+
+.card2 h3::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+
+    width: 151px;
+    height: 2.1px;
+
+    background: linear-gradient(
+        90deg,
+        #6FE8FF,
+        #9B6BFF
+    );
+
+    border-radius: 10px;
+}
+
+
+.card2 p {
+  font-family: "Poppins", sans-serif;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.5;
+    margin: 0;
+}
+
+.voltar-wrapper {
+  display: flex;
+  justify-content: flex-end; 
+}
+
+.btn-voltar {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  margin-top: 30px;
+
+  padding: 10px 22px;
+  border-radius: 10px;
+
+  background: rgba(63, 169, 245, 0.08);
+  border: 1px solid #3FA9F5;
+  color: #CFEFFF;
+
+  text-decoration: none;
+  font-size: 14px;
+  transition: 0.3s ease;
+}
+
+.btn-voltar:hover {
+  background: rgba(63, 169, 245, 0.25);
+  transform: translateY(-2px);
+}
+
+
 }
