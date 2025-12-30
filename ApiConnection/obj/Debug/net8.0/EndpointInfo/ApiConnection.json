@@ -14,17 +14,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Movimentacaos"
+                "$ref": "#/components/schemas/MovimentacaoDTO"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Movimentacaos"
+                "$ref": "#/components/schemas/MovimentacaoDTO"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Movimentacaos"
+                "$ref": "#/components/schemas/MovimentacaoDTO"
               }
             }
           }
@@ -281,30 +281,6 @@
   },
   "components": {
     "schemas": {
-      "ClientOptions": {
-        "type": "object",
-        "properties": {
-          "schema": {
-            "type": "string",
-            "nullable": true
-          },
-          "headers": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
-            },
-            "nullable": true
-          },
-          "queryParams": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "EditarMovimentacaoDto": {
         "type": "object",
         "properties": {
@@ -337,29 +313,9 @@
         },
         "additionalProperties": false
       },
-      "Movimentacaos": {
+      "MovimentacaoDTO": {
         "type": "object",
         "properties": {
-          "baseUrl": {
-            "type": "string",
-            "nullable": true
-          },
-          "requestClientOptions": {
-            "$ref": "#/components/schemas/ClientOptions"
-          },
-          "tableName": {
-            "type": "string",
-            "nullable": true,
-            "readOnly": true
-          },
-          "primaryKey": {
-            "type": "object",
-            "additionalProperties": {
-              "nullable": true
-            },
-            "nullable": true,
-            "readOnly": true
-          },
           "usuarioId": {
             "type": "string",
             "format": "uuid"

@@ -15,11 +15,20 @@ builder.Services.AddSwaggerGen();
 builder.Services.Configure<SupabaseSettings>(
     builder.Configuration.GetSection("Supabase")
 );
+
 builder.Services.AddScoped<SupabaseService>();
 builder.Services.AddScoped<IUsuarioRepositor, UsuarioRepositor>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IMovimentacaoRepositorio, MovimentacaoRepositor>();
 builder.Services.AddScoped<IMovimentacaoService, MovimentacaoService>();
+builder.Services.AddCors(optios =>
+{
+    optios.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+    });
+
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -30,6 +39,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowAll");
 
 app.UseAuthorization();
 

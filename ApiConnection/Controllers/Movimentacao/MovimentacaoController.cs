@@ -19,11 +19,18 @@ namespace ApiConnection.Controllers.Movimentacao
 
         // ➕ Criar movimentação
         [HttpPost("adicionar")]
-        public async Task<IActionResult> AdicionarMovimentacao([FromBody] Movimentacaos movimentacao)
+        public async Task<IActionResult> AdicionarMovimentacao([FromBody] MovimentacaoDTO dto)
         {
-            if (movimentacao == null)
+            if (dto == null)
                 return BadRequest("Movimentação inválida");
-
+            var movimentacao = new Movimentacaos
+            {
+                UsuarioId = dto.UsuarioId,
+                Tipo = dto.Tipo,
+                Valor = dto.Valor,
+                Data = dto.Data,
+                Categoria = dto.Categoria
+            };
             await _movimentacaoService.CriarMovimentacaoAsync(movimentacao);
             return Ok();
         }
@@ -38,7 +45,7 @@ namespace ApiConnection.Controllers.Movimentacao
 
         // 📅 Listar movimentações por mês
         [HttpGet("{usuarioId}/mes")]
-        public async Task<IActionResult> ListarPorMes(Guid usuarioId,[FromQuery] int ano,[FromQuery] int mes)
+        public async Task<IActionResult> ListarPorMes(Guid usuarioId, [FromQuery] int ano, [FromQuery] int mes)
         {
             var dto = new ListarMovimentacoesMesDto
             {
@@ -52,7 +59,7 @@ namespace ApiConnection.Controllers.Movimentacao
         }
         // ✏️ Editar movimentação
         [HttpPut("{id}")]
-        public async Task<IActionResult> Editar(Guid id,[FromBody] EditarMovimentacaoDto dto,Guid usuarioid)
+        public async Task<IActionResult> Editar(Guid id, [FromBody] EditarMovimentacaoDto dto, Guid usuarioid)
         {
             if (dto == null)
                 return BadRequest("Dados inválidos");
@@ -63,9 +70,9 @@ namespace ApiConnection.Controllers.Movimentacao
 
         // ❌ Excluir movimentação
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Excluir(Guid id,Guid usuarioid)
+        public async Task<IActionResult> Excluir(Guid id, Guid usuarioid)
         {
-            await _movimentacaoService.ExcluirMovimentacaoAsync(id,usuarioid);
+            await _movimentacaoService.ExcluirMovimentacaoAsync(id, usuarioid);
             return NoContent();
         }
 
@@ -80,6 +87,20 @@ namespace ApiConnection.Controllers.Movimentacao
                 .ResumoMovimentacaoAsync(usuarioId, mes, ano);
 
             return Ok(resumo);
+        }
+        public class MovimentacaoDTO()
+        {
+            public Guid UsuarioId { get; set; }
+
+            public string Tipo { get; set; } = null!;
+
+            public decimal Valor { get; set; }
+
+            public DateTime Data { get; set; }
+
+            public string? Categoria { get; set; }
+
+            public DateTime CreatedAt { get; set; }
         }
     }
 }

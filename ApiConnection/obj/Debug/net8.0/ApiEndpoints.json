@@ -123,8 +123,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "movimentacao",
-        "Type": "Models.Entidades.Movimentacaos",
+        "Name": "dto",
+        "Type": "ApiConnection.Controllers.Movimentacao.MovimentacaoController\u002BMovimentacaoDTO",
         "IsRequired": true
       }
     ],
