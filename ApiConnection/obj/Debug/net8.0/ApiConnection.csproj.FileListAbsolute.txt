@@ -58,3 +58,6 @@ C:\Users\victor\source\repos\CaixaMEI\ApiConnection\bin\Debug\net8.0\Websocket.C
 C:\Users\victor\source\repos\CaixaMEI\ApiConnection\bin\Debug\net8.0\Models.dll
 C:\Users\victor\source\repos\CaixaMEI\ApiConnection\bin\Debug\net8.0\Models.pdb
 C:\Users\victor\source\repos\CaixaMEI\ApiConnection\bin\Debug\net8.0\BCrypt.Net-Next.dll
+C:\Users\victor\source\repos\CaixaMEI\ApiConnection\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\victor\source\repos\CaixaMEI\ApiConnection\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\victor\source\repos\CaixaMEI\ApiConnection\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll

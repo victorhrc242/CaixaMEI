@@ -26,7 +26,8 @@ namespace Models.entidades.Usuarios
         
         [Column("idade")]
         public int? Idade { get; set; }
-
+        [Column("DataNascimento")]
+        public DateTime DataNascimento { get; set; } // só para cálculo
         [Column("data_cadastro")]
         public DateTime DataCadastro { get; set; }
     }

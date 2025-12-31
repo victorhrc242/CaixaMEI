@@ -24,27 +24,26 @@ namespace ApiConnection.Controllers.Usuarios
             _client = supabase.Client;
             _configuration = configuration;
         }
-        //cadastrar  aqui passa os valores ja para o repositorio e nessa passada ele ja criptographa 
-        //a senha
         [HttpPost("CadastrarUsuario")]
         public async Task<IActionResult> CadastrarUsuarioAsync([FromBody] UsuarioCreateDto dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            // 🔐 HASH DA SENHA
+            // Valida confirmação de senha antes de hash
+            if (dto.Senha != dto.comfirmarsenha)
+                return BadRequest("As senhas não conferem.");
+
             var senhaHash = BCrypt.Net.BCrypt.HashPassword(dto.Senha);
 
             var usuario = new Usuario
             {
                 Nome = dto.Nome,
                 Email = dto.Email,
-                Senha = senhaHash, // ✅ hash correto
-                Idade = dto.Idade
+                Senha = senhaHash,
+                DataNascimento = dto.DataNascimento
             };
-
             await _usuarioService.CadastrarUsuarioAsync(dto.Email, senhaHash, usuario);
-
             return Ok("Usuário cadastrado com sucesso");
         }
         // aqui consome a Função de fazer login 
@@ -69,8 +68,9 @@ namespace ApiConnection.Controllers.Usuarios
             public string Nome { get; set; } = null!;
             public string Email { get; set; } = null!;
             public string Senha { get; set; } = null!;
-            public int? Idade { get; set; }
+            public string comfirmarsenha { get; set; } = null!;
+            public DateTime DataNascimento { get; set; }
         }
     }
-   
+
 }

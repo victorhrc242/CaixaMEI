@@ -358,10 +358,13 @@
             "type": "string",
             "nullable": true
           },
-          "idade": {
-            "type": "integer",
-            "format": "int32",
+          "comfirmarsenha": {
+            "type": "string",
             "nullable": true
+          },
+          "dataNascimento": {
+            "type": "string",
+            "format": "date-time"
           }
         },
         "additionalProperties": false
