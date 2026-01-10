@@ -27,20 +27,13 @@
             <button class="men" onclick="document.getElementById('planos').scrollIntoView({ behavior: 'smooth' })">
                 Planos
             </button>
+
+            
         </div>
 
-        <button class="sbms">
-            Saiba mais
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                <path d="M5 12h14M13 5l6 7-6 7"
-                      stroke="currentColor"
-                      stroke-width="1.8"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"/>
-            </svg>
-        </button>
+     
     </nav>
-
+    <button class="btn-cadastro" id="btnOpenLogin">Fazer login</button>
     <div class="divider"></div>
 
     
@@ -148,15 +141,86 @@
             </div>
         </div>
 
-        <button class="plansbtn">Saiba Mais sobre os Planos</button>
+        
     </section>
 
-    <div class="divider-footer"></div>
+        <div class="sbms-wrapper">
+       <a href="SaibaMais.html" class="sbms">
 
-    
+            Saiba mais
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                <path d="M5 12h14M13 5l6 7-6 7"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"/>
+            </svg>
+        </a>
+        </div>
+        
+    <div class="divider-footer"></div>
+        
+
+ <!-- login modal -->
+<div class="login-modal" id="loginModal">
+  <div class="login-box">
+    <h2>Entrar</h2>
+    <div class="input-wrapper">
+      <input type="email" id="emailLogin" placeholder="Email">
+    </div>
+    <div class="input-wrapper">
+  <input type="password" id="senhaLogin" placeholder="Senha">
+  <svg id="toggleSenha" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye">
+    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+    <circle cx="12" cy="12" r="3"/>
+  </svg>
+</div>
+
+    <button id="btnLogin">Entrar</button>
+    <p class="switch-link">Não tem conta? <a href="#" id="linkRegister">Criar conta</a></p>
+    <span class="fechar" id="fecharLogin">✖</span>
+  </div>
+</div>
+
+<!-- registro modal -->
+<div class="login-modal" id="registerModal">
+  <div class="login-box">
+    <h2>Criar conta</h2>
+    <div class="input-wrapper">
+      <input type="text" id="nome" placeholder="Nome completo">
+    </div>
+    <div class="input-wrapper">
+      <input type="text" id="nick" placeholder="Nome de usuário">
+    </div>
+    <div class="input-wrapper">
+      <input type="email" id="emailRegister" placeholder="Email">
+    </div>
+    <div class="input-wrapper">
+      <input type="password" id="senhaRegister" placeholder="Senha">
+      <svg id="toggleSenha2" class="eye-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+    <circle cx="12" cy="12" r="3"></circle>
+  </svg>
+    </div>
+    <select id="plano">
+      <option value="">Selecione um plano</option>
+      <option value="gratis">Grátis</option>
+      <option value="pro">PRO</option>
+    </select>
+    <button id="btnRegister">Criar conta</button>
+    <p class="switch-link">Já tem conta? <a href="#" id="linkLogin">Entrar</a></p>
+    <span class="fechar" id="fecharRegister">✖</span>
+  </div>
+</div>
+
+
+
     <footer>
         <p>Projeto sob licença MIT • Em desenvolvimento</p>
     </footer>
 
+    <div id="lista"></div>
+
+    <script src="script.js" defer></script>
 </body>
 </html>

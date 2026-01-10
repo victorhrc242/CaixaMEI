@@ -38,9 +38,17 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+app.UseExceptionHandler(handler => handler.Run(async context =>
+{
+    context.Response.StatusCode = 500;
+    context.Response.ContentType = "text/plain";
+    await context.Response.WriteAsync("Erro interno no servidor.");
+}));
 
 app.UseCors("AllowAll");
+
+//app.UseHttpsRedirection();
+
 
 app.UseAuthorization();
 
