@@ -81,7 +81,7 @@ app.Use(async (context, next) =>
         var password = credentials[1];
 
         // 🔐 DEFINA AQUI
-        if (username != "VacaPreta242" || password != "João14:22")
+        if (username != "VacaPreta242" || password != "Joao1422")
         {
             context.Response.StatusCode = 401;
             return;
