@@ -1,23 +1,30 @@
-# ===== BUILD =====
+# =========================
+# BUILD
+# =========================
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-# Copia os projetos (paths RELATIVOS AO CONTEXTO)
-COPY ApiConnection/ApiConnection.csproj ApiConnection/
-COPY Models/Models.csproj Models/
-
-# Restaura dependências
-RUN dotnet restore ApiConnection/ApiConnection.csproj
-
-# Copia todo o código
+# Copia tudo do backend
 COPY . .
 
-# Build
-WORKDIR /src/ApiConnection
-RUN dotnet publish -c Release -o /app/publish
+# Restore
+RUN dotnet restore ApiConnection.csproj
 
-# ===== RUNTIME =====
-FROM mcr.microsoft.com/dotnet/aspnet:8.0
+# Publish
+RUN dotnet publish ApiConnection.csproj -c Release -o /app/publish
+
+# =========================
+# RUNTIME
+# =========================
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
+
+# 🔥 VARIÁVEIS CRÍTICAS PARA O RENDER
+ENV ASPNETCORE_URLS=http://+:8080
+ENV ASPNETCORE_ENVIRONMENT=Production
+ENV DOTNET_HOSTBUILDER__RELOADCONFIGONCHANGE=false
+
+# Copia o build
 COPY --from=build /app/publish .
+
 ENTRYPOINT ["dotnet", "ApiConnection.dll"]
