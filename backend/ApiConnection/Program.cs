@@ -54,11 +54,48 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 // Pipeline
-if (app.Environment.IsDevelopment())
+// if (app.Environment.IsDevelopment())
+// {
+//     app.UseSwagger();
+//     app.UseSwaggerUI();
+// }
+app.Use(async (context, next) =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    if (context.Request.Path.StartsWithSegments("/swagger"))
+    {
+        var authHeader = context.Request.Headers["Authorization"].ToString();
+
+        if (string.IsNullOrEmpty(authHeader) || !authHeader.StartsWith("Basic "))
+        {
+            context.Response.Headers["WWW-Authenticate"] = "Basic";
+            context.Response.StatusCode = 401;
+            return;
+        }
+
+        var encodedCredentials = authHeader["Basic ".Length..].Trim();
+        var credentials = System.Text.Encoding.UTF8.GetString(
+            Convert.FromBase64String(encodedCredentials)
+        ).Split(':');
+
+        var username = credentials[0];
+        var password = credentials[1];
+
+        // 🔐 DEFINA AQUI
+        if (username != "VacaPreta242" || password != "João14:22")
+        {
+            context.Response.StatusCode = 401;
+            return;
+        }
+    }
+
+    await next();
+});
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "CaixaMEI API v1");
+    c.RoutePrefix = "swagger";
+});
 
 // Tratamento global de erro
 app.UseExceptionHandler(handler => handler.Run(async context =>
