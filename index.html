@@ -1,226 +1,134 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MEI Fácil</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="dashboard.css">
 </head>
 <body>
 
-    
-    <nav class="menu">
-        <div class="logo">
-            <h2>MEI <span>Fácil</span></h2>
-            <img src="./imagens/logo.png" class="icon-menu" alt="Logo">
-        </div>
+<div class="layout">
 
-        <div class="nav-links">
-            <button class="men" onclick="document.getElementById('vantagens').scrollIntoView({ behavior: 'smooth' })">
-                Vantagens
-            </button>
-
-            <button class="men" onclick="document.getElementById('funcionalidades').scrollIntoView({ behavior: 'smooth' })">
-                Funcionalidades
-            </button>
-
-            <button class="men" onclick="document.getElementById('planos').scrollIntoView({ behavior: 'smooth' })">
-                Planos
-            </button>
-
-            
-        </div>
-
-     
+  <aside class="sidebar">
+    <img src="./imagens/logo.png" alt="logo da empresa" class="logo">
+    <h2>Painel</h2>
+    <nav>
+      <a class="active">Dashboard</a>
+      <a>Fluxo</a>
+      <a>Estoque</a>
+      <a>Tarefas</a>
+      <a>Relatórios</a>
     </nav>
-    <button class="btn-cadastro" id="btnOpenLogin">Fazer login</button>
-    <div class="divider"></div>
+  </aside>
 
-    
-    <div class="container-header">
-        <header>
-            <div class="logo2">
-                <h1>MEI <span>Fácil</span></h1>
-                <img src="./imagens/logo.png" class="icon-menu2" alt="Logo">
+  <div class="container">
+    <main class="content">
+
+      <button class="menu-toggle">☰</button>
+
+      
+      <section data-page="dashboard" class="page active">
+        <h1>Dashboard de <span>Controle</span></h1>
+        <p class="sub">Gerencie seu negócio com facilidade</p>
+
+        <section class="cards">
+          <div class="card green">
+            <h3>Entradas do Dia</h3>
+            <strong>R$ 5.250,00</strong>
+            <small>+12% Hoje</small>
+          </div>
+
+          <div class="card red">
+            <h3>Saídas do Dia</h3>
+            <strong>R$ 1.980,00</strong>
+            <small>-5% Hoje</small>
+          </div>
+
+          <div class="card blue">
+            <h3>Saldo Atual</h3>
+            <strong>R$ 32.500,00</strong>
+            <small>Total em Caixa</small>
+          </div>
+
+          <div class="card purple">
+            <h3>Resumo Mensal</h3>
+            <strong>R$ 78.300,00</strong>
+            <small>Receita do Mês</small>
+          </div>
+        </section>
+      </section>
+
+      
+      <section data-page="fluxo" class="page">
+        <h1>Fluxo de Movimento</h1>
+
+        <section class="cards">
+          <div class="card big">
+            <canvas id="fluxoChart"></canvas>
+            <p>Entradas e saídas do negócio</p>
+          </div>
+        </section>
+      </section>
+
+      
+      <section data-page="estoque" class="page">
+        <h1>Estoque Atual</h1>
+
+        <section class="cards">
+          <div class="card big">
+            <p>Controle de produtos e alertas</p>
+
+            <div class="progress">
+              <div class="bar red" style="width:65%">Produtos em Falta</div>
             </div>
 
-            <p>
-                Controle financeiro descomplicado <br>
-                para Microempreendedores <br>
-                individuais e autónomos.
-            </p>
+            <div class="progress">
+              <div class="bar orange" style="width:40%">Estoque Baixo</div>
+            </div>
+          </div>
+        </section>
+      </section>
 
-            <button class="btn-hero">Conheça a Plataforma</button>
-        </header>
+      
+      <section data-page="tarefas" class="page">
+        <h1>Tarefas</h1>
 
-        <img src="./imagens/mei.png" alt="Plataforma MEI Fácil" class="imagem">
-    </div>
-
-   
-    <section class="section-container" id="vantagens">
-        <div class="grid-vantagens">
-            <div class="card-mini">
-                
-                <p>📈 Controle suas receitas, despesas e lucro de forma simplificada.</p>
+        <section class="cards">
+          <div class="card card-tarefas big">
+            <div class="task-input">
+              <input type="text" id="novaTarefa" placeholder="Nova tarefa...">
+              <button id="addTarefa">+</button>
             </div>
 
-            <div class="card-mini">
-                
-                <p>🔒 Organize suas finanças sem erros contábeis.</p>
+            <ul class="tasks" id="listaTarefas"></ul>
+          </div>
+        </section>
+      </section>
+
+      
+      <section data-page="relatorios" class="page">
+        <h1>Relatórios</h1>
+
+        <section class="cards">
+          <div class="card card-relatorios big">
+            <button id="addRelatorio">Adicionar Relatório</button>
+            <textarea class="relatorio" placeholder="Escreva seu relatório aqui..." style="display: none;"></textarea>
+            <div class="relatorio-buttons" style="display: none;">
+              <button id="saveRelatorio">Salvar</button>
+              <button id="cancelRelatorio">Cancelar</button>
             </div>
+            <ul class="relatorios-list" id="listaRelatorios"></ul>
+          </div>
+        </section>
+      </section>
 
-            <div class="card-mini">
-                
-                <p>🔔 Alertas de vencimentos e limites.</p>
-            </div>
-
-            <div class="card-mini">
-                
-                <p>🚀 Plataforma moderna, intuitiva e segura.</p>
-            </div>
-        </div>
-    </section>
-
-    
-    <section class="section-container" id="funcionalidades">
-        <div class="section-title">
-            <span>►</span> Funcionalidades <span>◄</span>
-        </div>
-
-        <div class="grid-funcionalidades">
-            <div class="card-func">
-                <div class="icon-box yellow">
-                    
-                </div>
-                <div class="card-content">
-                    <h3>📈 Cadastro</h3>
-                    <p class="subtitle">Entradas e Saídas</p>
-                    <p class="description">Registre receitas e despesas facilmente.</p>
-                </div>
-            </div>
-
-            <div class="card-func">
-                <div class="icon-box green">
-                    
-                </div>
-                <div class="card-content">
-                    <h3>💰 Lucro Mensal</h3>
-                    <p class="description">Cálculo automático e preciso.</p>
-                </div>
-            </div>
-
-            <div class="card-func">
-                <div class="icon-box blue">
-                    
-                </div>
-                <div class="card-content">
-                    <h3>🔔 Alertas</h3>
-                    <p class="description">Notificações inteligentes.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    
-    <section class="section-container" id="planos">
-        <div class="section-title">
-            <span>►</span> Planos Flexíveis <span>◄</span>
-        </div>
-
-        <div class="grid-planos">
-            <div class="card-plan purple">
-                <span class="badge">GRÁTIS</span>
-                <h3>Plano Gratuito</h3>
-                <p>Funcionalidades básicas</p>
-            </div>
-
-            <div class="card-plan cyan">
-                <span class="badge">PRO</span>
-                <h3>Plano Completo</h3>
-                <p>Acesso ilimitado para o MEI</p>
-            </div>
-        </div>
-
-        
-    </section>
-
-        <div class="sbms-wrapper">
-       <a href="SaibaMais.html" class="sbms">
-
-            Saiba mais
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                <path d="M5 12h14M13 5l6 7-6 7"
-                      stroke="currentColor"
-                      stroke-width="1.8"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"/>
-            </svg>
-        </a>
-        </div>
-        
-    <div class="divider-footer"></div>
-        
-
- <!-- login modal -->
-<div class="login-modal" id="loginModal">
-  <div class="login-box">
-    <h2>Entrar</h2>
-    <div class="input-wrapper">
-      <input type="email" id="emailLogin" placeholder="Email">
-    </div>
-    <div class="input-wrapper">
-  <input type="password" id="senhaLogin" placeholder="Senha">
-  <svg id="toggleSenha" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye">
-    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-    <circle cx="12" cy="12" r="3"/>
-  </svg>
-</div>
-
-    <button id="btnLogin">Entrar</button>
-    <p class="switch-link">Não tem conta? <a href="#" id="linkRegister">Criar conta</a></p>
-    <span class="fechar" id="fecharLogin">✖</span>
+    </main>
   </div>
+
 </div>
 
-<!-- registro modal -->
-<div class="login-modal" id="registerModal">
-  <div class="login-box">
-    <h2>Criar conta</h2>
-    <div class="input-wrapper">
-      <input type="text" id="nome" placeholder="Nome completo">
-    </div>
-    <div class="input-wrapper">
-      <input type="text" id="nick" placeholder="Nome de usuário">
-    </div>
-    <div class="input-wrapper">
-      <input type="email" id="emailRegister" placeholder="Email">
-    </div>
-    <div class="input-wrapper">
-      <input type="password" id="senhaRegister" placeholder="Senha">
-      <svg id="toggleSenha2" class="eye-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-    <circle cx="12" cy="12" r="3"></circle>
-  </svg>
-    </div>
-    <select id="plano">
-      <option value="">Selecione um plano</option>
-      <option value="gratis">Grátis</option>
-      <option value="pro">PRO</option>
-    </select>
-    <button id="btnRegister">Criar conta</button>
-    <p class="switch-link">Já tem conta? <a href="#" id="linkLogin">Entrar</a></p>
-    <span class="fechar" id="fecharRegister">✖</span>
-  </div>
-</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="dashboard.js"></script>
 
-
-
-    <footer>
-        <p>Projeto sob licença MIT • Em desenvolvimento</p>
-    </footer>
-
-    <div id="lista"></div>
-
-    <script src="script.js" defer></script>
 </body>
 </html>
