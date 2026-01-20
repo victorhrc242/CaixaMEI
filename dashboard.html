@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+
+<div class="layout">
+
+  <aside class="sidebar">
+    <img src="./imagens/logo.png" alt="logo da empresa" class="logo">
+    <h2>Painel</h2>
+    <nav>
+      <a class="active">Dashboard</a>
+      <a>Fluxo</a>
+      <a>Estoque</a>
+      <a>Tarefas</a>
+      <a>Relatórios</a>
+    </nav>
+  </aside>
+
+  <div class="container">
+    <main class="content">
+
+      <button class="menu-toggle">☰</button>
+
+      
+      <section data-page="dashboard" class="page active">
+        <h1>Dashboard de <span>Controle</span></h1>
+        <p class="sub">Gerencie seu negócio com facilidade</p>
+
+        <section class="cards">
+          <div class="card green">
+            <h3>Entradas do Dia</h3>
+            <strong id="card-entradas">R$ 0,00</strong>
+            
+          </div>
+
+          <div class="card red">
+            <h3>Saídas do Dia</h3>
+            <strong id="card-saidas">R$ 0,00</strong>
+            
+          </div>
+
+          <div class="card blue">
+            <h3>Saldo Atual</h3>
+            <strong id="card-saldo">R$ 0,00</strong>
+            
+          </div>
+
+          <div class="card purple">
+            <h3>Resumo Mensal</h3>
+            <strong id="card-mensal">R$ 0,00</strong>
+            
+          </div>
+        </section>
+      </section>
+
+      
+      <section data-page="fluxo" class="page">
+        <h1>Fluxo de Movimento</h1>
+
+        <section class="cards">
+          <div class="card big">
+            <canvas id="fluxoChart"></canvas>
+            <p>Entradas e saídas do negócio</p>
+          </div>
+        </section>
+      </section>
+
+      
+      <section data-page="estoque" class="page">
+        <h1>Estoque Atual</h1>
+
+        <section class="cards">
+          <div class="card big">
+            <p>Controle de produtos e alertas</p>
+
+            <div class="progress">
+              <div class="bar red" style="width:65%">Produtos em Falta</div>
+            </div>
+
+            <div class="progress">
+              <div class="bar orange" style="width:40%">Estoque Baixo</div>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      
+      <section data-page="tarefas" class="page">
+        <h1>Tarefas</h1>
+
+        <section class="cards">
+          <div class="card card-tarefas big">
+            <div class="task-input">
+              <input type="text" id="novaTarefa" placeholder="Nova tarefa...">
+              <button id="addTarefa">+</button>
+            </div>
+
+            <ul class="tasks" id="listaTarefas"></ul>
+          </div>
+        </section>
+      </section>
+
+      
+      <section data-page="relatorios" class="page">
+        <h1>Relatórios</h1>
+
+        <section class="cards">
+          <div class="card card-relatorios big">
+            <button id="addRelatorio">Adicionar Relatório</button>
+            <textarea class="relatorio" placeholder="Escreva seu relatório aqui..." style="display: none;"></textarea>
+            <div class="relatorio-buttons" style="display: none;">
+              <button id="saveRelatorio">Salvar</button>
+              <button id="cancelRelatorio">Cancelar</button>
+            </div>
+            <ul class="relatorios-list" id="listaRelatorios"></ul>
+          </div>
+        </section>
+      </section>
+
+    </main>
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="dashboard.js"></script>
+
+</body>
+</html>
