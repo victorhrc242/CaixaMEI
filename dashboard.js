@@ -160,30 +160,67 @@ document.addEventListener("DOMContentLoaded", () => {
     /* ============================================================
        5. HISTÓRICO / ESTOQUE
     ============================================================ */
-    async function carregarEstoque() {
-        const tbody = document.getElementById("lista-estoque");
-        if (!tbody) return;
+    /* Variável global para não ficar recriando as opções do filtro toda hora */
+let categoriasMapeadas = false;
 
-        try {
-            const response = await fetch(`${API}/movimentacao/${usuarioLogado.id}`);
-            const movimentacoes = await response.json();
+async function carregarEstoque(categoriaParaFiltrar = "todos") {
+    const tbody = document.getElementById("lista-estoque");
+    const filtroSelect = document.getElementById("filtro-categoria"); // Certifique-se que o ID no HTML é este
+    if (!tbody) return;
+
+    try {
+        const response = await fetch(`${API}/movimentacao/${usuarioLogado.id}`);
+        let movimentacoes = await response.json();
+
+        // 1. MAPEIA CATEGORIAS ÚNICAS PARA O SELECT
+        if (!categoriasMapeadas && filtroSelect) {
+            // Pega apenas os nomes das categorias, remove nulos e duplicados
+            const categoriasUnicas = [...new Set(movimentacoes.map(m => m.categoria).filter(c => c))];
             
-            tbody.innerHTML = "";
-            movimentacoes.sort((a, b) => new Date(b.data) - new Date(a.data));
-
-            movimentacoes.forEach(m => {
-                const isEntrada = m.tipo.toLowerCase().includes("entrada") || m.tipo.toLowerCase().includes("receita");
-                const tr = document.createElement("tr");
-                tr.innerHTML = `
-                    <td style="padding: 12px;">${new Date(m.data).toLocaleDateString('pt-BR')}</td>
-                    <td>${m.categoria || '-'}</td>
-                    <td><span style="color: ${isEntrada ? '#2ed47a' : '#ff4d4d'}">${m.tipo.toUpperCase()}</span></td>
-                    <td style="font-weight: bold;">${money(m.valor)}</td>
-                `;
-                tbody.appendChild(tr);
+            filtroSelect.innerHTML = '<option value="todos">Todas as Categorias</option>';
+            categoriasUnicas.sort().forEach(cat => {
+                const option = document.createElement("option");
+                option.value = cat;
+                option.textContent = cat;
+                filtroSelect.appendChild(option);
             });
-        } catch (err) { console.error("Erro histórico"); }
+            categoriasMapeadas = true;
+        }
+
+        // 2. APLICA O FILTRO POR CATEGORIA
+        if (categoriaParaFiltrar !== "todos") {
+            movimentacoes = movimentacoes.filter(m => m.categoria === categoriaParaFiltrar);
+        }
+
+        // 3. RENDERIZA A TABELA
+        tbody.innerHTML = "";
+        movimentacoes.sort((a, b) => new Date(b.data) - new Date(a.data));
+
+        movimentacoes.forEach(m => {
+            const isEntrada = m.tipo.toLowerCase().includes("entrada") || m.tipo.toLowerCase().includes("receita");
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td style="padding: 12px;">${new Date(m.data).toLocaleDateString('pt-BR')}</td>
+                <td>${m.categoria || '-'}</td>
+                <td><span style="color: ${isEntrada ? '#2ed47a' : '#ff4d4d'}">${m.tipo.toUpperCase()}</span></td>
+                <td style="font-weight: bold;">${money(m.valor)}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+    } catch (err) { 
+        console.error("Erro ao carregar histórico:", err); 
     }
+}
+
+/* ============================================================
+   AJUSTE NO ESCUTADOR DO FILTRO (Colocar dentro do DOMContentLoaded)
+============================================================ */
+const filtroCategoriaElement = document.getElementById("filtro-categoria");
+if (filtroCategoriaElement) {
+    filtroCategoriaElement.onchange = (e) => {
+        carregarEstoque(e.target.value);
+    };
+}
 
     /* ============================================================
        6. FILTROS E NAVEGAÇÃO
