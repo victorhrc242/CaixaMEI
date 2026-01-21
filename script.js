@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     
-    // URL BASE
+    // URL BASE - Em produção, idealmente via variável de ambiente, mas mantida conforme solicitado
     const API_BASE_URL = "https://caixamei.onrender.com/api";
 
     // Seleção de Elementos
@@ -13,9 +13,29 @@ document.addEventListener("DOMContentLoaded", () => {
     const linkLogin = document.getElementById("linkLogin");
     const btnRegister = document.getElementById("btnRegister");
     const btnLogin = document.getElementById("btnLogin");
-    
-    const senhaLogin = document.getElementById("senhaLogin");
-    const senhaRegister = document.getElementById("senhaRegister");
+
+    // --- LÓGICA DE ALTERNÂNCIA DE MODAIS (CORREÇÃO DE PRODUÇÃO) ---
+    if (linkRegister) {
+        linkRegister.addEventListener("click", (e) => {
+            e.preventDefault();
+            loginModal.classList.remove("active");
+            registerModal.classList.add("active");
+        });
+    }
+
+    if (linkLogin) {
+        linkLogin.addEventListener("click", (e) => {
+            e.preventDefault();
+            registerModal.classList.remove("active");
+            loginModal.classList.add("active");
+        });
+    }
+
+    // Fechar ao clicar fora do box
+    window.addEventListener("click", (e) => {
+        if (e.target === loginModal) loginModal.classList.remove("active");
+        if (e.target === registerModal) registerModal.classList.remove("active");
+    });
 
     // Função para exibir feedback (Erro/Sucesso)
     function exibirErro(modal, mensagem, sucesso = false) {
@@ -24,9 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!msgElemento) {
             msgElemento = document.createElement("p");
             msgElemento.className = "mensagem-feedback";
-            msgElemento.style.fontSize = "14px";
-            msgElemento.style.marginTop = "10px";
-            msgElemento.style.textAlign = "center";
+            msgElemento.style.cssText = "font-size: 14px; margin-top: 10px; text-align: center;";
             const form = modal.querySelector(".login-box");
             form.insertBefore(msgElemento, form.querySelector("button"));
         }
@@ -40,34 +58,41 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 5000);
     }
 
-    // Gerenciamento de Interface e Redirecionamento
+    // --- SEGURANÇA E REDIRECIONAMENTO ---
     function atualizarInterfaceUsuario() {
         const usuarioLogado = localStorage.getItem("usuario");
-        
+        const isDashboard = window.location.pathname.includes("dashboard.html");
+
         if (usuarioLogado) {
-            if (!window.location.pathname.includes("dashboard.html")) {
-                window.location.href = "dashboard.html";
-                return; 
+            // Se estiver logado e na home, manda pro Dashboard
+            if (!isDashboard) {
+                window.location.replace("dashboard.html");
+                return;
             }
-            btnOpenLogin.innerText = "Logout";
-            btnOpenLogin.style.backgroundColor = "#ff4d4d";
-            btnOpenLogin.onclick = (e) => { e.preventDefault(); logout(); };
-            carregarDashboard(); 
+            if (btnOpenLogin) {
+                btnOpenLogin.innerText = "Sair";
+                btnOpenLogin.style.backgroundColor = "#ff4d4d";
+                btnOpenLogin.onclick = (e) => { e.preventDefault(); logout(); };
+            }
+            carregarDashboard();
         } else {
-            if (window.location.pathname.includes("dashboard.html")) {
-                window.location.href = "index.html";
+            // Se não estiver logado e tentar ver o Dashboard, manda pro Login
+            if (isDashboard) {
+                window.location.replace("index.html");
+                return;
             }
-            btnOpenLogin.innerText = "Fazer login";
-            btnOpenLogin.onclick = () => loginModal.classList.add("active");
+            if (btnOpenLogin) {
+                btnOpenLogin.onclick = () => loginModal.classList.add("active");
+            }
         }
     }
 
     function logout() {
-        localStorage.removeItem("usuario");
-        window.location.href = "index.html"; 
+        localStorage.clear(); // Limpa tudo por segurança
+        window.location.replace("index.html");
     }
 
-    // --- LÓGICA DE LOGIN COM SPINNER ---
+    // --- LÓGICA DE LOGIN ---
     if (btnLogin) {
         btnLogin.onclick = async (e) => { 
             e.preventDefault();
@@ -79,10 +104,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            // Estado de Carregamento
             const textoOriginal = btnLogin.innerHTML;
             btnLogin.disabled = true;
-            btnLogin.innerHTML = `<span class="spinner"></span> Entrando...`;
+            btnLogin.innerHTML = `<span class="spinner"></span> Aguarde...`;
 
             try {
                 const response = await fetch(`${API_BASE_URL}/Usuario/fazer_login`, {
@@ -91,142 +115,101 @@ document.addEventListener("DOMContentLoaded", () => {
                     body: JSON.stringify({ Email: email, Senha: senha }) 
                 });
 
-                if (!response.ok) {
-                    const erroTexto = await response.text();
-                    throw new Error(erroTexto || "Email ou senha incorretos.");
-                }
+                if (!response.ok) throw new Error("Credenciais inválidas ou erro no servidor.");
 
                 const usuario = await response.json();
                 localStorage.setItem("usuario", JSON.stringify(usuario));
                 
-                loginModal.classList.remove("active");
-                window.location.href = "dashboard.html"; 
+                window.location.replace("dashboard.html");
 
             } catch (err) {
-                exibirErro(loginModal, err.message);
+                exibirErro(loginModal, "Falha no login. Verifique seus dados.");
+                console.error("Auth Error"); // Log genérico para segurança
                 btnLogin.disabled = false;
                 btnLogin.innerHTML = textoOriginal;
-                document.getElementById("senhaLogin").value = ""; // Limpa senha por segurança
             }
         };
     }
 
-    // --- LÓGICA DE CADASTRO COM SPINNER ---
+    // --- LÓGICA DE CADASTRO ---
     if (btnRegister) {
         btnRegister.onclick = async (e) => {
             e.preventDefault();
-
             const nome = document.getElementById("nome").value.trim();
             const email = document.getElementById("emailRegister").value.trim();
             const senha = document.getElementById("senhaRegister").value.trim();
             const confirmarSenha = document.getElementById("confirmarSenhaRegister").value.trim();
-            const dataNascimentoInput = document.getElementById("dataNascimento").value.trim();
+            const dataNasc = document.getElementById("dataNascimento").value;
 
-            if (!nome || !email || !senha || !confirmarSenha || !dataNascimentoInput) {
-                exibirErro(registerModal, "Preencha todos os campos.");
+            if (!nome || !email || !senha || senha !== confirmarSenha) {
+                exibirErro(registerModal, "Verifique os campos e a senha.");
                 return;
             }
 
-            if (senha !== confirmarSenha) {
-                exibirErro(registerModal, "As senhas não coincidem!");
-                return;
-            }
-
-            // Estado de Carregamento
-            const textoOriginal = btnRegister.innerHTML;
             btnRegister.disabled = true;
-            btnRegister.innerHTML = `<span class="spinner"></span> Criando conta...`;
-
-            // Formatação de Data
-            let dataFormatada = dataNascimentoInput.includes("-") ? 
-                dataNascimentoInput : 
-                `${dataNascimentoInput.substring(4, 8)}-${dataNascimentoInput.substring(2, 4)}-${dataNascimentoInput.substring(0, 2)}`;
-
-            const dadosCadastro = {
-                nome: nome,
-                email: email,
-                senha: senha,
-                comfirmarsenha: confirmarSenha,
-                dataNascimento: dataFormatada 
-            };
+            const textoOriginal = btnRegister.innerHTML;
+            btnRegister.innerHTML = `Criando...`;
 
             try {
                 const response = await fetch(`${API_BASE_URL}/Usuario/CadastrarUsuario`, {
                     method: "POST",
-                    headers: { 
-                        "Content-Type": "application/json",
-                        "Accept": "application/json"
-                    },
-                    body: JSON.stringify(dadosCadastro)
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        nome, email, senha,
+                        comfirmarsenha: confirmarSenha,
+                        dataNascimento: dataNasc
+                    })
                 });
 
-                const respostaTexto = await response.text();
+                if (!response.ok) throw new Error();
 
-                if (response.ok) {
-                    exibirErro(registerModal, "Conta criada! Redirecionando...", true);
-                    setTimeout(() => {
-                        registerModal.classList.remove("active");
-                        loginModal.classList.add("active");
-                        btnRegister.disabled = false;
-                        btnRegister.innerHTML = textoOriginal;
-                    }, 2000);
-                } else {
-                    throw new Error(respostaTexto || "Erro no cadastro.");
-                }
+                exibirErro(registerModal, "Sucesso! Faça login.", true);
+                setTimeout(() => {
+                    registerModal.classList.remove("active");
+                    loginModal.classList.add("active");
+                }, 2000);
             } catch (err) {
-                exibirErro(registerModal, err.message);
+                exibirErro(registerModal, "Erro ao cadastrar. Tente outro email.");
+            } finally {
                 btnRegister.disabled = false;
                 btnRegister.innerHTML = textoOriginal;
             }
         };
     }
 
-    // Carregamento do Dashboard
     async function carregarDashboard() {
-        const usuarioLogadoStr = localStorage.getItem("usuario");
-        if (!usuarioLogadoStr) return;
+        const usuarioStr = localStorage.getItem("usuario");
+        if (!usuarioStr) return;
         
-        const usuarioLogado = JSON.parse(usuarioLogadoStr);
-        const listaContainer = document.getElementById("lista");
-        if (!listaContainer) return;
+        const user = JSON.parse(usuarioStr);
+        const container = document.getElementById("lista");
+        if (!container) return;
 
         try {
-            const response = await fetch(`${API_BASE_URL}/movimentacao/${usuarioLogado.id}`);
-            if (!response.ok) throw new Error("Erro ao buscar dados.");
-
-            const movimentacoes = await response.json();
+            const res = await fetch(`${API_BASE_URL}/movimentacao/${user.id}`);
+            if (!res.ok) return;
+            const dados = await res.json();
             
-            if (movimentacoes.length === 0) {
-                listaContainer.innerHTML = "<p style='text-align:center; padding:20px;'>Nenhuma movimentação encontrada.</p>";
+            if (dados.length === 0) {
+                container.innerHTML = "<p>Sem movimentações.</p>";
                 return;
             }
 
-            let html = `<div class="financeiro-resumo">
-                            <h3>Suas últimas movimentações</h3>
-                            <table>
-                                <thead>
-                                    <tr><th>Data</th><th>Tipo</th><th>Valor</th></tr>
-                                </thead>
-                                <tbody>`;
-
-            movimentacoes.forEach(mov => {
-                const cor = (mov.Tipo.toLowerCase().includes("receita") || mov.Tipo.toLowerCase().includes("entrada")) ? "#2ecc71" : "#ff4d4d";
+            let html = `<div class="financeiro-resumo"><table><thead><tr><th>Data</th><th>Tipo</th><th>Valor</th></tr></thead><tbody>`;
+            dados.forEach(mov => {
+                const isEntrada = mov.Tipo.toLowerCase().includes("receita") || mov.Tipo.toLowerCase().includes("entrada");
                 html += `<tr>
-                            <td>${new Date(mov.Data).toLocaleDateString('pt-BR')}</td>
-                            <td>${mov.Tipo}</td>
-                            <td style="color: ${cor}; font-weight: bold;">R$ ${mov.Valor.toFixed(2)}</td>
-                         </tr>`;
+                    <td>${new Date(mov.Data).toLocaleDateString('pt-BR')}</td>
+                    <td>${mov.Tipo}</td>
+                    <td style="color: ${isEntrada ? '#2ecc71' : '#ff4d4d'}; font-weight:bold;">R$ ${mov.Valor.toFixed(2)}</td>
+                </tr>`;
             });
-
-            html += `</tbody></table></div>`;
-            listaContainer.innerHTML = html;
-
-        } catch (err) {
-            console.error("Erro dashboard:", err);
+            container.innerHTML = html + `</tbody></table></div>`;
+        } catch (e) {
+            container.innerHTML = "<p>Erro ao carregar dados.</p>";
         }
     }
 
-    // Controles de Visibilidade de Senha e Modais (Seu código original mantido)
     if (fecharLogin) fecharLogin.onclick = () => loginModal.classList.remove("active");
     if (fecharRegister) fecharRegister.onclick = () => registerModal.classList.remove("active");
     
