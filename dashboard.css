@@ -380,11 +380,11 @@ h1 span {
 
 .field-box input, 
 .field-box select {
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(36, 32, 32, 0.3);
     border: 1px solid var(--card-border);
     border-radius: 12px;
     padding: 12px 15px;
-    color: #fff;
+    color: #5f5a5a;
     font-size: 0.95rem;
     transition: all 0.3s ease;
     width: 100%;

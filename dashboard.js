@@ -42,32 +42,47 @@ document.addEventListener("DOMContentLoaded", () => {
         };
     }
 
-    /* ============================================================
+   /* ============================================================
    2. ADICIONAR NOVA MOVIMENTAÇÃO (POST)
 ============================================================ */
 const btnSalvar = document.getElementById("btnSalvarMovimentacao");
+
 if (btnSalvar) {
-    btnSalvar.onclick = async () => {
+    btnSalvar.onclick = async (e) => {
+        // Previne comportamento padrão caso seja um form
+        if(e) e.preventDefault();
+
         const valorInput = document.getElementById("movValor");
         const categoriaInput = document.getElementById("movCategoria");
         const tipoInput = document.getElementById("movTipo");
         const msgFeedback = document.getElementById("msgFeedback");
 
+        // Validação básica
         if (!valorInput.value || !categoriaInput.value.trim()) {
-            alert("Preencha os campos!");
+            msgFeedback.innerText = "⚠️ Preencha todos os campos!";
+            msgFeedback.style.color = "#ff4d4d";
+            msgFeedback.style.display = "block";
             return;
         }
 
+        // --- ESTADO DE CARREGAMENTO (SPINNER) ---
+        const textoOriginal = btnSalvar.innerHTML;
+        btnSalvar.disabled = true;
+        btnSalvar.innerHTML = `<span class="spinner"></span> Salvando...`;
+        msgFeedback.style.display = "none"; // Limpa mensagens anteriores
+
         const dataAgora = new Date().toISOString();
 
-        // Remova acentos do tipo (saída -> saida) caso o C# use Enum simples
+        // Tratamento do tipo (Remove acentos: Saída -> saida)
         const tipoFormatado = tipoInput.value.toLowerCase()
-                                .normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                                .normalize("NFD")
+                                .replace(/[\u0300-\u036f]/g, "");
 
+        // Montagem do Objeto (Verifique se o seu C# espera usuarioId ou UsuarioId)
         const dadosMovimentacao = {
             usuarioId: usuarioLogado.id, 
             tipo: tipoFormatado, 
-            valor: Number(valorInput.value), // Garante que é número
+            valor: Number(valorInput.value),
             data: dataAgora,
             categoria: categoriaInput.value.trim(),
             createdAt: dataAgora
@@ -78,7 +93,7 @@ if (btnSalvar) {
         try {
             const response = await fetch(`${API}/movimentacao/adicionar`, {
                 method: 'POST',
-                mode: 'cors', // Força o modo CORS explicitamente
+                mode: 'cors',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
@@ -87,20 +102,34 @@ if (btnSalvar) {
             });
 
             if (response.ok) {
-                msgFeedback.innerText = "Sucesso!";
+                msgFeedback.innerText = "✅ Sucesso! Atualizando...";
                 msgFeedback.style.color = "#2ecc71";
                 msgFeedback.style.display = "block";
-                setTimeout(() => window.location.reload(), 1000);
+
+                // Limpa campos para uma sensação de "limpeza"
+                valorInput.value = "";
+                categoriaInput.value = "";
+
+                // Aguarda 1.5s para o usuário ler o sucesso antes de recarregar
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1500);
+
             } else {
                 const erroTexto = await response.text();
                 console.error("Detalhe do Erro 500:", erroTexto);
-                throw new Error("Servidor rejeitou os dados. Verifique o valor ou o ID.");
+                throw new Error("Erro no servidor. Verifique os dados.");
             }
+
         } catch (err) {
             console.error(err);
-            msgFeedback.innerText = err.message;
+            msgFeedback.innerText = `❌ Erro: ${err.message}`;
             msgFeedback.style.color = "#ff4d4d";
             msgFeedback.style.display = "block";
+
+            // Restaura o botão em caso de erro para o usuário tentar novamente
+            btnSalvar.disabled = false;
+            btnSalvar.innerHTML = textoOriginal;
         }
     };
 }
@@ -271,8 +300,9 @@ if (btnSalvar) {
             if (target) {
                 target.classList.add("active");
                 // Carregamento sob demanda
-                if (pageName === "estoque") carregarEstoque();
+                if (pageName === "historico") carregarEstoque();
                 if (pageName === "dashboard") carregarDashboard();
+                if (pageName === "addmovim") carregarDashboard();
             }
         };
     });
