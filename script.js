@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     
     // url
-    const API_BASE_URL = "http://localhost:5142/api/Usuario";
+    const API_BASE_URL = "https://caixamei.onrender.com/api/Usuario";
 
     
     const loginModal = document.getElementById("loginModal");
@@ -47,21 +47,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // interface/logout
     function atualizarInterfaceUsuario() {
-        const usuarioLogado = localStorage.getItem("usuario");
-        
-        if (usuarioLogado) {
-            btnOpenLogin.innerText = "Logout";
-            btnOpenLogin.style.backgroundColor = "#ff4d4d";
-            btnOpenLogin.onclick = (e) => { e.preventDefault(); logout(); };
-            carregarDashboard(); 
-        } else {
-            btnOpenLogin.innerText = "Fazer login";
-            btnOpenLogin.style.backgroundColor = "";
-            btnOpenLogin.onclick = () => loginModal.classList.add("active");
-            const lista = document.getElementById("lista");
-            if(lista) lista.innerHTML = "";
+    const usuarioLogado = localStorage.getItem("usuario");
+    
+    if (usuarioLogado) {
+        // Se o usuário já está logado e NÃO está na página de dashboard
+        if (!window.location.pathname.includes("dashboard.html")) {
+            window.location.href = "dashboard.html"; // Altere para o nome do seu arquivo
+            return; 
         }
+
+        btnOpenLogin.innerText = "Logout";
+        btnOpenLogin.style.backgroundColor = "#ff4d4d";
+        btnOpenLogin.onclick = (e) => { e.preventDefault(); logout(); };
+        carregarDashboard(); 
+    } else {
+        // Se não estiver logado e tentar acessar o dashboard, volta pro index
+        if (window.location.pathname.includes("dashboard.html")) {
+            window.location.href = "index.html";
+        }
+        
+        btnOpenLogin.innerText = "Fazer login";
+        btnOpenLogin.style.backgroundColor = "";
+        btnOpenLogin.onclick = () => loginModal.classList.add("active");
+        const lista = document.getElementById("lista");
+        if(lista) lista.innerHTML = "";
     }
+}
 
     function logout() {
         localStorage.removeItem("usuario");
@@ -99,56 +110,65 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         };
     }
-
-    // cdstr
-    
-  btnRegister.onclick = async (e) => {
+   btnRegister.onclick = async (e) => {
     e.preventDefault();
+
+    // Captura dos elementos do DOM
     const nome = document.getElementById("nome").value.trim();
     const email = document.getElementById("emailRegister").value.trim();
     const senha = document.getElementById("senhaRegister").value.trim();
+    const confirmarSenha = document.getElementById("confirmarSenhaRegister").value.trim();
+    const dataNascimentoInput = document.getElementById("dataNascimento").value;
 
-    if (!validarSenhaForte(senha)) {
-        exibirErro(registerModal, "Senha fraca! Use 8 caracteres, maiúsculas, números e símbolos.");
+    // Validação de preenchimento
+    if (!nome || !email || !senha || !confirmarSenha || !dataNascimentoInput) {
+        exibirErro(registerModal, "Preencha todos os campos obrigatórios.");
         return;
     }
 
-    const dadosCadastro = {
-        Nome: nome,
-        Email: email,
-        Senha: senha,
-        comfirmarsenha: senha, 
-        DataNascimento: "2000-01-01T00:00:00Z"
-    };
-
-   try {
-    const response = await fetch(`${API_BASE_URL}/CadastrarUsuario`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(dadosCadastro)
-    });
-
-    const erroTexto = await response.text();
-
-    if (!response.ok) {
-        if (erroTexto.includes("<!DOCTYPE html>")) {
-            throw new Error("Erro interno no servidor. Veja o terminal da API.");
-        }
-        throw new Error(erroTexto || "Erro ao processar cadastro.");
+    // Validação de igualdade de senha
+    if (senha !== confirmarSenha) {
+        exibirErro(registerModal, "As senhas não coincidem!");
+        return;
     }
 
-    exibirErro(registerModal, "Conta criada! Redirecionando...", true);
-    setTimeout(() => {
-        registerModal.classList.remove("active");
-        loginModal.classList.add("active");
-    }, 2000);
+    // MONTAGEM DO JSON IDÊNTICO À API
+    const dadosCadastro = {
+        nome: nome,
+        email: email,
+        senha: senha,
+        confirmarSenha: confirmarSenha,
+        dataNascimento: new Date(dataNascimentoInput).toISOString() // Converte para o formato 2026-01-21T15:27:32.429Z
+    };
 
-} catch (err) {
-    exibirErro(registerModal, err.message);
-}
+    console.log("Enviando para API Usuario:", dadosCadastro);
 
+    try {
+        const response = await fetch(`${API_BASE_URL}/Usuario/CadastrarUsuario`, {
+            method: "POST",
+            headers: { 
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            body: JSON.stringify(dadosCadastro)
+        });
+
+        if (response.ok) {
+            exibirErro(registerModal, "Conta criada com sucesso!", true);
+            setTimeout(() => {
+                registerModal.classList.remove("active");
+                loginModal.classList.add("active");
+            }, 2000);
+        } else {
+            const erroTexto = await response.text();
+            throw new Error(erroTexto || "Erro ao processar cadastro.");
+        }
+
+    } catch (err) {
+        console.error("Erro no Cadastro:", err);
+        exibirErro(registerModal, err.message);
+    }
 };
-
     // dash
     async function carregarDashboard() {
         const usuarioLogadoStr = localStorage.getItem("usuario");
@@ -156,9 +176,9 @@ document.addEventListener("DOMContentLoaded", () => {
         const usuarioLogado = JSON.parse(usuarioLogadoStr);
         const listaContainer = document.getElementById("lista");
         if (!listaContainer) return;
-
+        console.log(usuarioLogado.id);
         try {
-            const response = await fetch(`http://localhost:5142/api/movimentacao/${usuarioLogado.Id}`);
+            const response = await fetch(`https://caixamei.onrender.com/api/movimentacao/${usuarioLogado.id}`);
             if (!response.ok) throw new Error("Erro ao buscar dados.");
 
             const movimentacoes = await response.json();
@@ -200,9 +220,6 @@ document.addEventListener("DOMContentLoaded", () => {
             console.error("Erro dashboard:", err);
         }
     }
-
-    
-    
     // toggle login
     const toggleLogin = document.getElementById("toggleSenha");
     if (toggleLogin && senhaLogin) {
@@ -213,7 +230,6 @@ document.addEventListener("DOMContentLoaded", () => {
             toggleLogin.style.stroke = isPassword ? "#0047ab" : "#000";
         };
     }
-
     //  toggle cdstr
     const toggleRegister = document.getElementById("toggleSenha2");
     if (toggleRegister && senhaRegister) {
@@ -226,22 +242,18 @@ document.addEventListener("DOMContentLoaded", () => {
             toggleRegister.style.stroke = isPassword ? "#0047ab": "#000"
         };
     }
-
     // ctrl modais
     if (fecharLogin) fecharLogin.onclick = () => loginModal.classList.remove("active");
     if (fecharRegister) fecharRegister.onclick = () => registerModal.classList.remove("active");
-    
     if (linkRegister) linkRegister.onclick = (e) => {
         e.preventDefault();
         loginModal.classList.remove("active");
         registerModal.classList.add("active");
     };
-
     if (linkLogin) linkLogin.onclick = (e) => {
         e.preventDefault();
         registerModal.classList.remove("active");
         loginModal.classList.add("active");
     };
-
     atualizarInterfaceUsuario();
 });

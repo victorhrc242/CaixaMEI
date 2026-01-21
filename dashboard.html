@@ -15,22 +15,46 @@
     <nav>
       <a class="active">Dashboard</a>
       <a>Fluxo</a>
-      <a>Estoque</a>
+      <a>estoque</a>
       <a>Tarefas</a>
-      <a>Relatórios</a>
+      <!-- <a>Relatórios</a> -->
     </nav>
+    <div class="sidebar-footer" style="margin-top: auto;">
+        <a id="btnLogout" class="logout-link">
+            <span class="icon">🚪</span> Sair da Conta
+        </a>
+    </div>
   </aside>
 
   <div class="container">
     <main class="content">
 
       <button class="menu-toggle">☰</button>
-
-      
       <section data-page="dashboard" class="page active">
         <h1>Dashboard de <span>Controle</span></h1>
         <p class="sub">Gerencie seu negócio com facilidade</p>
-
+        <div class="filtros-dashboard" style="margin-bottom: 20px; display: flex; gap: 10px; align-items: center;">
+    <label for="filtro-mes">Mês:</label>
+    <select id="filtro-mes" class="select-filtro">
+        <option value="1">Janeiro</option>
+        <option value="2">Fevereiro</option>
+        <option value="3">Março</option>
+        <option value="4">Abril</option>
+        <option value="5">Maio</option>
+        <option value="6">Junho</option>
+        <option value="7">Julho</option>
+        <option value="8">Agosto</option>
+        <option value="9">Setembro</option>
+        <option value="10">Outubro</option>
+        <option value="11">Novembro</option>
+        <option value="12">Dezembro</option>
+    </select>
+    <label for="filtro-ano">Ano:</label>
+    <select id="filtro-ano" class="select-filtro">
+        <option value="2026">2026</option>
+    </select>
+    <button id="btnFiltrar" style="padding: 5px 15px; cursor: pointer; background: #0047ab; color: white; border: none; border-radius: 4px;">Filtrar</button>
+</div>
         <section class="cards">
           <div class="card green">
             <h3>Entradas do Dia</h3>
@@ -68,45 +92,67 @@
             <p>Entradas e saídas do negócio</p>
           </div>
         </section>
-      </section>
+      </section>    
+  <section data-page="estoque" class="page">
+  <h1>Histórico de <span>Movimentações</span></h1>
+  <p class="sub">Lista completa de entradas e saídas</p>
 
-      
-      <section data-page="estoque" class="page">
-        <h1>Estoque Atual</h1>
+  <div class="filtros-estoque" style="margin-bottom: 20px; display: flex; gap: 10px; align-items: center;">
+    <label for="filtro-categoria" style="color: rgba(255,255,255,0.6);">Filtrar por Categoria:</label>
+    <select id="filtro-categoria" style="background: #1a1a1a; color: white; border: 1px solid rgba(255,255,255,0.1); padding: 8px; border-radius: 5px; outline: none;">
+      <option value="todas">Todas as Categorias</option>
+      </select>
+  </div>
 
-        <section class="cards">
-          <div class="card big">
-            <p>Controle de produtos e alertas</p>
-
-            <div class="progress">
-              <div class="bar red" style="width:65%">Produtos em Falta</div>
-            </div>
-
-            <div class="progress">
-              <div class="bar orange" style="width:40%">Estoque Baixo</div>
-            </div>
-          </div>
-        </section>
-      </section>
-
-      
+  <section class="cards">
+    <div class="card big" style="overflow-x: auto;">
+      <table class="tabela-customizada" style="width: 100%; border-collapse: collapse; min-width: 600px;">
+        <thead>
+          <tr style="border-bottom: 1px solid rgba(255,255,255,0.1); text-align: left;">
+            <th style="padding: 15px; color: rgba(255,255,255,0.6);">Data</th>
+            <th style="padding: 15px; color: rgba(255,255,255,0.6);">Categoria</th>
+            <th style="padding: 15px; color: rgba(255,255,255,0.6);">Tipo</th>
+            <th style="padding: 15px; color: rgba(255,255,255,0.6);">Valor</th>
+          </tr>
+        </thead>
+        <tbody id="lista-estoque">
+          </tbody>
+      </table>
+    </div>
+  </section>
+</section>
       <section data-page="tarefas" class="page">
-        <h1>Tarefas</h1>
+  <h1>Nova <span>Movimentação</span></h1>
+  <p class="sub">Registre entradas ou saídas no seu fluxo de caixa</p>
 
-        <section class="cards">
-          <div class="card card-tarefas big">
-            <div class="task-input">
-              <input type="text" id="novaTarefa" placeholder="Nova tarefa...">
-              <button id="addTarefa">+</button>
-            </div>
-
-            <ul class="tasks" id="listaTarefas"></ul>
-          </div>
-        </section>
-      </section>
-
-      
-      <section data-page="relatorios" class="page">
+  <section class="cards">
+  <div class="movimentacao-form">
+    <h2>Nova Movimentação</h2>
+    <div class="input-group-grid">
+        <div class="field-box">
+            <label>Valor (R$)</label>
+            <input type="number" id="movValor" placeholder="0,00" step="0.01">
+        </div>
+        <div class="field-box">
+            <label>Categoria</label>
+            <input type="text" id="movCategoria" placeholder="Ex: Aluguel, Venda...">
+        </div>
+        <div class="field-box">
+            <label>Tipo</label>
+            <select id="movTipo">
+                <option value="entrada">Entrada</option>
+                <option value="saida">Saída</option>
+            </select>
+        </div>
+    </div>
+    <button id="btnSalvarMovimentacao" class="btn-save-mov">
+        Salvar Lançamento
+    </button>
+    <div id="msgFeedback"></div>
+</div>
+  </section>
+</section>
+      <!-- <section data-page="relatorios" class="page">
         <h1>Relatórios</h1>
 
         <section class="cards">
@@ -120,13 +166,23 @@
             <ul class="relatorios-list" id="listaRelatorios"></ul>
           </div>
         </section>
-      </section>
+      </section> -->
 
     </main>
   </div>
 
 </div>
-
+<div id="modalLogout" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-icon">⚠️</div>
+        <h2>Encerrar Sessão</h2>
+        <p>Você tem certeza que deseja sair do sistema?</p>
+        <div class="modal-buttons">
+            <button id="btnConfirmarSair" class="btn-confirm">Sim, Sair</button>
+            <button id="btnCancelarSair" class="btn-cancel">Cancelar</button>
+        </div>
+    </div>
+</div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="dashboard.js"></script>
 

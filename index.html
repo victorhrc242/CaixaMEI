@@ -10,7 +10,7 @@
 
     
     <nav class="menu">
-        <div class="logo">
+        <div class="logo">  
             <h2>MEI <span>Fácil</span></h2>
             <img src="./imagens/logo.png" class="icon-menu" alt="Logo">
         </div>
@@ -27,8 +27,6 @@
             <button class="men" onclick="document.getElementById('planos').scrollIntoView({ behavior: 'smooth' })">
                 Planos
             </button>
-
-            
         </div>
 
      
@@ -134,11 +132,11 @@
                 <p>Funcionalidades básicas</p>
             </div>
 
-            <div class="card-plan cyan">
+            <!-- <div class="card-plan cyan">
                 <span class="badge">PRO</span>
                 <h3>Plano Completo</h3>
                 <p>Acesso ilimitado para o MEI</p>
-            </div>
+            </div> -->
         </div>
 
         
@@ -182,7 +180,6 @@
   </div>
 </div>
 
-<!-- registro modal -->
 <div class="login-modal" id="registerModal">
   <div class="login-box">
     <h2>Criar conta</h2>
@@ -190,30 +187,24 @@
       <input type="text" id="nome" placeholder="Nome completo">
     </div>
     <div class="input-wrapper">
-      <input type="text" id="nick" placeholder="Nome de usuário">
-    </div>
-    <div class="input-wrapper">
       <input type="email" id="emailRegister" placeholder="Email">
     </div>
     <div class="input-wrapper">
       <input type="password" id="senhaRegister" placeholder="Senha">
-      <svg id="toggleSenha2" class="eye-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-    <circle cx="12" cy="12" r="3"></circle>
-  </svg>
     </div>
-    <select id="plano">
-      <option value="">Selecione um plano</option>
-      <option value="gratis">Grátis</option>
-      <option value="pro">PRO</option>
-    </select>
+    <div class="input-wrapper">
+      <input type="password" id="confirmarSenhaRegister" placeholder="Confirmar Senha">
+    </div>
+    <div class="input-wrapper">
+      <label style="color: var(--text-muted); font-size: 0.8rem; display: block; margin-bottom: 5px;">Data de Nascimento</label>
+      <input type="date" id="dataNascimento">
+    </div>
+    
     <button id="btnRegister">Criar conta</button>
     <p class="switch-link">Já tem conta? <a href="#" id="linkLogin">Entrar</a></p>
     <span class="fechar" id="fecharRegister">✖</span>
   </div>
 </div>
-
-
 
     <footer>
         <p>Projeto sob licença MIT • Em desenvolvimento</p>
