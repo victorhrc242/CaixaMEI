@@ -11,7 +11,6 @@ if (!usuarioLogado || !usuarioLogado.id) {
 
 document.addEventListener("DOMContentLoaded", () => {
     
-    // Variável global para o gráfico (para poder destruir e recriar ao filtrar)
     let fluxoChart;
 
     const money = v =>
@@ -21,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
     /* ============================================================
-       2. FUNÇÃO DO GRÁFICO (RESTAURADA)
+       2. FUNÇÃO DO GRÁFICO
     ============================================================ */
     async function carregarGrafico(mesFiltro = null, anoFiltro = null) {
         const canvas = document.getElementById("fluxoChart");
@@ -31,7 +30,6 @@ document.addEventListener("DOMContentLoaded", () => {
             const res = await fetch(`${API}/movimentacao/${usuarioLogado.id}`);
             let dados = await res.json();
 
-            // Filtro opcional
             if (mesFiltro && anoFiltro) {
                 dados = dados.filter(m => {
                     const d = new Date(m.data);
@@ -58,39 +56,21 @@ document.addEventListener("DOMContentLoaded", () => {
                 data: {
                     labels: ["DOM", "SEG", "TER", "QUA", "QUI", "SEX", "SÁB"],
                     datasets: [
-                        { 
-                            label: "Entradas", 
-                            data: entradas, 
-                            borderColor: "#2ed47a", 
-                            backgroundColor: "rgba(46, 212, 122, 0.1)", 
-                            fill: true, 
-                            tension: 0.4 
-                        },
-                        { 
-                            label: "Saídas", 
-                            data: saidas, 
-                            borderColor: "#ff4d4d", 
-                            backgroundColor: "rgba(255, 77, 77, 0.1)", 
-                            fill: true, 
-                            tension: 0.4 
-                        }
+                        { label: "Entradas", data: entradas, borderColor: "#2ed47a", backgroundColor: "rgba(46, 212, 122, 0.1)", fill: true, tension: 0.4 },
+                        { label: "Saídas", data: saidas, borderColor: "#ff4d4d", backgroundColor: "rgba(255, 77, 77, 0.1)", fill: true, tension: 0.4 }
                     ]
                 },
                 options: { 
-                    responsive: true,
+                    responsive: true, 
                     maintainAspectRatio: false,
-                    plugins: {
-                        legend: { labels: { color: '#fff' } }
-                    },
+                    plugins: { legend: { labels: { color: '#fff' } } },
                     scales: {
                         y: { ticks: { color: '#aaa' }, grid: { color: 'rgba(255,255,255,0.05)' } },
                         x: { ticks: { color: '#aaa' }, grid: { display: false } }
                     }
                 }
             });
-        } catch (e) {
-            console.error("Erro ao carregar gráfico:", e);
-        }
+        } catch (e) { console.error("Erro gráfico:", e); }
     }
 
     /* ============================================================
@@ -103,7 +83,6 @@ document.addEventListener("DOMContentLoaded", () => {
             const ano = anoFiltro || hoje.getFullYear();
 
             const res = await fetch(`${API}/movimentacao/${usuarioLogado.id}/resumo?mes=${mes}&ano=${ano}`);
-            if (!res.ok) throw new Error();
             const d = await res.json();
 
             const ids = {
@@ -117,13 +96,69 @@ document.addEventListener("DOMContentLoaded", () => {
                 const el = document.getElementById(id);
                 if (el) el.innerText = money(valor);
             }
-        } catch (e) {
-            console.error("Erro no resumo financeiro");
-        }
+        } catch (e) { console.error("Erro dashboard"); }
     }
 
     /* ============================================================
-       4. HISTÓRICO / ESTOQUE
+       4. ADICIONAR MOVIMENTAÇÃO (POST) - ESSA PARTE VOLTOU
+    ============================================================ */
+    const btnSalvar = document.getElementById("btnSalvarMovimentacao");
+    if (btnSalvar) {
+        btnSalvar.onclick = async (e) => {
+            e.preventDefault();
+
+            const valorInput = document.getElementById("movValor");
+            const categoriaInput = document.getElementById("movCategoria");
+            const tipoInput = document.getElementById("movTipo");
+            const msgFeedback = document.getElementById("msgFeedback");
+
+            if (!valorInput.value || !categoriaInput.value.trim()) {
+                if (msgFeedback) {
+                    msgFeedback.innerText = "⚠️ Preencha todos os campos!";
+                    msgFeedback.style.color = "#ff4d4d";
+                    msgFeedback.style.display = "block";
+                }
+                return;
+            }
+
+            const textoOriginal = btnSalvar.innerHTML;
+            btnSalvar.disabled = true;
+            btnSalvar.innerHTML = `Salvando...`;
+
+            try {
+                const tipoFormatado = tipoInput.value.toLowerCase()
+                    .normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+                const response = await fetch(`${API}/movimentacao/adicionar`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        usuarioId: usuarioLogado.id,
+                        tipo: tipoFormatado,
+                        valor: Number(valorInput.value),
+                        data: new Date().toISOString(),
+                        categoria: categoriaInput.value.trim()
+                    })
+                });
+
+                if (response.ok) {
+                    if (msgFeedback) {
+                        msgFeedback.innerText = "✅ Movimentação salva!";
+                        msgFeedback.style.color = "#2ed47a";
+                        msgFeedback.style.display = "block";
+                    }
+                    setTimeout(() => window.location.reload(), 1000);
+                } else { throw new Error(); }
+            } catch (err) {
+                if (msgFeedback) msgFeedback.innerText = "❌ Erro ao conectar com servidor.";
+                btnSalvar.disabled = false;
+                btnSalvar.innerHTML = textoOriginal;
+            }
+        };
+    }
+
+    /* ============================================================
+       5. HISTÓRICO / ESTOQUE
     ============================================================ */
     async function carregarEstoque() {
         const tbody = document.getElementById("lista-estoque");
@@ -147,13 +182,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 `;
                 tbody.appendChild(tr);
             });
-        } catch (err) {
-            console.error("Erro ao carregar histórico");
-        }
+        } catch (err) { console.error("Erro histórico"); }
     }
 
     /* ============================================================
-       5. FILTROS E NAVEGAÇÃO
+       6. FILTROS E NAVEGAÇÃO
     ============================================================ */
     const btnFiltrar = document.getElementById("btnFiltrar");
     if (btnFiltrar) {
@@ -182,7 +215,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (target) {
                 target.classList.add("active");
                 if (pageName === "historico") carregarEstoque();
-                if (pageName === "dashboard") {
+                if (pageName === "dashboard" || pageName === "adicionar") {
                     carregarDashboard();
                     carregarGrafico();
                 }
@@ -190,7 +223,7 @@ document.addEventListener("DOMContentLoaded", () => {
         };
     });
 
-    // Lógica de Logout
+    // Logout
     const btnConfirmarSair = document.getElementById("btnConfirmarSair");
     if (btnConfirmarSair) {
         btnConfirmarSair.onclick = () => {
@@ -199,7 +232,7 @@ document.addEventListener("DOMContentLoaded", () => {
         };
     }
 
-    // Inicialização automática
+    // Inicialização
     carregarDashboard();
     carregarGrafico();
     carregarEstoque();
