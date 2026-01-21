@@ -1,44 +1,19 @@
 /* ============================================================
-    1. CONFIGURAÇÕES GLOBAIS E SEGURANÇA (EXECUTADO IMEDIATAMENTE)
+    1. CONFIGURAÇÕES GLOBAIS E SEGURANÇA
 ============================================================ */
 const API = "https://caixamei.onrender.com/api";
 const usuarioLogadoStr = localStorage.getItem("usuario");
 const usuarioLogado = usuarioLogadoStr ? JSON.parse(usuarioLogadoStr) : null;
 
-// Redirecionamento de segurança (Impede acesso à página sem login)
 if (!usuarioLogado || !usuarioLogado.id) {
     window.location.replace("index.html");
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    // Seleção de Elementos Modais (Evita erro de undefined)
-    const loginModal = document.getElementById("loginModal");
-    const registerModal = document.getElementById("registerModal");
-    const linkRegister = document.getElementById("linkRegister");
-    const linkLogin = document.getElementById("linkLogin");
-
-    /* ============================================================
-       2. LÓGICA DE INTERFACE E MODAIS
-    ============================================================ */
     
-    // Alternar entre Login e Cadastro
-    if (linkRegister && loginModal && registerModal) {
-        linkRegister.onclick = (e) => {
-            e.preventDefault();
-            loginModal.classList.remove("active");
-            registerModal.classList.add("active");
-        };
-    }
+    // Variável global para o gráfico (para poder destruir e recriar ao filtrar)
+    let fluxoChart;
 
-    if (linkLogin && loginModal && registerModal) {
-        linkLogin.onclick = (e) => {
-            e.preventDefault();
-            registerModal.classList.remove("active");
-            loginModal.classList.add("active");
-        };
-    }
-
-    // Função utilitária para formatar valores em R$
     const money = v =>
         Number(v || 0).toLocaleString("pt-BR", {
             style: "currency",
@@ -46,7 +21,80 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
     /* ============================================================
-       3. DASHBOARD / RESUMO FINANCEIRO
+       2. FUNÇÃO DO GRÁFICO (RESTAURADA)
+    ============================================================ */
+    async function carregarGrafico(mesFiltro = null, anoFiltro = null) {
+        const canvas = document.getElementById("fluxoChart");
+        if (!canvas || typeof Chart === "undefined") return;
+
+        try {
+            const res = await fetch(`${API}/movimentacao/${usuarioLogado.id}`);
+            let dados = await res.json();
+
+            // Filtro opcional
+            if (mesFiltro && anoFiltro) {
+                dados = dados.filter(m => {
+                    const d = new Date(m.data);
+                    return (d.getMonth() + 1) == mesFiltro && d.getFullYear() == anoFiltro;
+                });
+            }
+
+            const entradas = Array(7).fill(0);
+            const saidas = Array(7).fill(0);
+
+            dados.forEach(m => {
+                const dia = new Date(m.data).getDay();
+                if (m.tipo.toLowerCase().includes("entrada") || m.tipo.toLowerCase().includes("receita")) {
+                    entradas[dia] += m.valor;
+                } else {
+                    saidas[dia] += m.valor;
+                }
+            });
+
+            if (fluxoChart) fluxoChart.destroy();
+
+            fluxoChart = new Chart(canvas, {
+                type: "line",
+                data: {
+                    labels: ["DOM", "SEG", "TER", "QUA", "QUI", "SEX", "SÁB"],
+                    datasets: [
+                        { 
+                            label: "Entradas", 
+                            data: entradas, 
+                            borderColor: "#2ed47a", 
+                            backgroundColor: "rgba(46, 212, 122, 0.1)", 
+                            fill: true, 
+                            tension: 0.4 
+                        },
+                        { 
+                            label: "Saídas", 
+                            data: saidas, 
+                            borderColor: "#ff4d4d", 
+                            backgroundColor: "rgba(255, 77, 77, 0.1)", 
+                            fill: true, 
+                            tension: 0.4 
+                        }
+                    ]
+                },
+                options: { 
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { labels: { color: '#fff' } }
+                    },
+                    scales: {
+                        y: { ticks: { color: '#aaa' }, grid: { color: 'rgba(255,255,255,0.05)' } },
+                        x: { ticks: { color: '#aaa' }, grid: { display: false } }
+                    }
+                }
+            });
+        } catch (e) {
+            console.error("Erro ao carregar gráfico:", e);
+        }
+    }
+
+    /* ============================================================
+       3. DASHBOARD / RESUMO
     ============================================================ */
     async function carregarDashboard(mesFiltro = null, anoFiltro = null) {
         try {
@@ -55,83 +103,27 @@ document.addEventListener("DOMContentLoaded", () => {
             const ano = anoFiltro || hoje.getFullYear();
 
             const res = await fetch(`${API}/movimentacao/${usuarioLogado.id}/resumo?mes=${mes}&ano=${ano}`);
-            if (!res.ok) throw new Error("Erro ao buscar resumo");
-            
+            if (!res.ok) throw new Error();
             const d = await res.json();
 
-            // Atualiza os cards (Verifica se o elemento existe para não travar o script)
-            const elEntradas = document.getElementById("card-entradas");
-            const elSaidas = document.getElementById("card-saidas");
-            const elSaldo = document.getElementById("card-saldo");
-            const elMensal = document.getElementById("card-mensal");
+            const ids = {
+                "card-entradas": d.totalEntradas,
+                "card-saidas": d.totalSaidas,
+                "card-saldo": d.saldo,
+                "card-mensal": d.totalEntradas
+            };
 
-            if(elEntradas) elEntradas.innerText = money(d.totalEntradas);
-            if(elSaidas) elSaidas.innerText = money(d.totalSaidas);
-            if(elSaldo) elSaldo.innerText = money(d.saldo);
-            if(elMensal) elMensal.innerText = money(d.totalEntradas);
-
+            for (const [id, valor] of Object.entries(ids)) {
+                const el = document.getElementById(id);
+                if (el) el.innerText = money(valor);
+            }
         } catch (e) {
-            console.error("Falha silenciosa no Dashboard");
+            console.error("Erro no resumo financeiro");
         }
     }
 
     /* ============================================================
-       4. ADICIONAR MOVIMENTAÇÃO (POST)
-    ============================================================ */
-    const btnSalvar = document.getElementById("btnSalvarMovimentacao");
-    if (btnSalvar) {
-        btnSalvar.onclick = async (e) => {
-            e.preventDefault();
-
-            const valorInput = document.getElementById("movValor");
-            const categoriaInput = document.getElementById("movCategoria");
-            const tipoInput = document.getElementById("movTipo");
-            const msgFeedback = document.getElementById("msgFeedback");
-
-            if (!valorInput.value || !categoriaInput.value.trim()) {
-                if(msgFeedback) {
-                    msgFeedback.innerText = "⚠️ Preencha todos os campos!";
-                    msgFeedback.style.display = "block";
-                }
-                return;
-            }
-
-            const textoOriginal = btnSalvar.innerHTML;
-            btnSalvar.disabled = true;
-            btnSalvar.innerHTML = `<span class="spinner"></span> Aguarde...`;
-
-            const tipoFormatado = tipoInput.value.toLowerCase()
-                                    .normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-
-            try {
-                const response = await fetch(`${API}/movimentacao/adicionar`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        usuarioId: usuarioLogado.id, 
-                        tipo: tipoFormatado, 
-                        valor: Number(valorInput.value),
-                        data: new Date().toISOString(),
-                        categoria: categoriaInput.value.trim()
-                    })
-                });
-
-                if (response.ok) {
-                    if(msgFeedback) msgFeedback.innerText = "✅ Salvo com sucesso!";
-                    setTimeout(() => window.location.reload(), 1200);
-                } else {
-                    throw new Error();
-                }
-            } catch (err) {
-                if(msgFeedback) msgFeedback.innerText = "❌ Erro ao salvar.";
-                btnSalvar.disabled = false;
-                btnSalvar.innerHTML = textoOriginal;
-            }
-        };
-    }
-
-    /* ============================================================
-       5. NAVEGAÇÃO SPA (ESTOQUE / HISTÓRICO)
+       4. HISTÓRICO / ESTOQUE
     ============================================================ */
     async function carregarEstoque() {
         const tbody = document.getElementById("lista-estoque");
@@ -145,7 +137,7 @@ document.addEventListener("DOMContentLoaded", () => {
             movimentacoes.sort((a, b) => new Date(b.data) - new Date(a.data));
 
             movimentacoes.forEach(m => {
-                const isEntrada = m.tipo.toLowerCase() === "entrada";
+                const isEntrada = m.tipo.toLowerCase().includes("entrada") || m.tipo.toLowerCase().includes("receita");
                 const tr = document.createElement("tr");
                 tr.innerHTML = `
                     <td style="padding: 12px;">${new Date(m.data).toLocaleDateString('pt-BR')}</td>
@@ -156,19 +148,30 @@ document.addEventListener("DOMContentLoaded", () => {
                 tbody.appendChild(tr);
             });
         } catch (err) {
-            console.error("Erro ao carregar lista");
+            console.error("Erro ao carregar histórico");
         }
     }
 
-    // Gerenciador de cliques da Sidebar
+    /* ============================================================
+       5. FILTROS E NAVEGAÇÃO
+    ============================================================ */
+    const btnFiltrar = document.getElementById("btnFiltrar");
+    if (btnFiltrar) {
+        btnFiltrar.onclick = () => {
+            const mes = document.getElementById("filtro-mes").value;
+            const ano = document.getElementById("filtro-ano").value;
+            carregarDashboard(mes, ano);
+            carregarGrafico(mes, ano);
+        };
+    }
+
     const menuLinks = document.querySelectorAll(".sidebar nav a");
     const pages = document.querySelectorAll(".page");
 
     menuLinks.forEach(link => {
         link.onclick = (e) => {
             e.preventDefault();
-            const pageName = link.textContent.trim().toLowerCase()
-                                .normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            const pageName = link.textContent.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
             menuLinks.forEach(l => l.classList.remove("active"));
             pages.forEach(p => p.classList.remove("active"));
@@ -179,26 +182,16 @@ document.addEventListener("DOMContentLoaded", () => {
             if (target) {
                 target.classList.add("active");
                 if (pageName === "historico") carregarEstoque();
-                if (pageName === "dashboard") carregarDashboard();
+                if (pageName === "dashboard") {
+                    carregarDashboard();
+                    carregarGrafico();
+                }
             }
         };
     });
 
-    /* ============================================================
-       6. LOGOUT COM MODAL
-    ============================================================ */
-    const modalLogout = document.getElementById("modalLogout");
-    const btnLogout = document.getElementById("btnLogout");
+    // Lógica de Logout
     const btnConfirmarSair = document.getElementById("btnConfirmarSair");
-    const btnCancelarSair = document.getElementById("btnCancelarSair");
-
-    if (btnLogout) {
-        btnLogout.onclick = (e) => {
-            e.preventDefault();
-            if(modalLogout) modalLogout.style.display = "flex";
-        };
-    }
-
     if (btnConfirmarSair) {
         btnConfirmarSair.onclick = () => {
             localStorage.clear();
@@ -206,13 +199,8 @@ document.addEventListener("DOMContentLoaded", () => {
         };
     }
 
-    if (btnCancelarSair) {
-        btnCancelarSair.onclick = () => {
-            if(modalLogout) modalLogout.style.display = "none";
-        };
-    }
-
-    // Inicialização
+    // Inicialização automática
     carregarDashboard();
+    carregarGrafico();
     carregarEstoque();
 });
